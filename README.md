@@ -35,10 +35,13 @@ php artisan key:generate
 
 instale o postgreSQL local
 
-crie o banco:
+crie o banco e defina uma senha para o 'root':
 sudo -u postgres psql -c "CREATE DATABASE agrox;"
-sudo -u postgres psql -c "CREATE USER augusto WITH PASSWORD augusto;"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE agrox TO augusto;"
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+
+se der erro de permissao:
+
+sudo -u postgres psql -c "GRANT ALL ON SCHEMA public TO public;"
 
 ## confugura o .env
 
@@ -46,14 +49,13 @@ DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_DATABASE=agrox
-DB_USERNAME=augusto
-DB_PASSWORD=augusto
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
 
 ## executa as migration
 
 php artisan migrate
 
-S
 # configure sua chave ssh
 
 1. primeiro cheque se já existe uma ssh
