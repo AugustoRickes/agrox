@@ -1,0 +1,53 @@
+stages:
+  - setup
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: "18"
+  PHP_VERSION: "8.2"
+
+cache:
+  paths:
+    - vendor/
+    - node_modules/
+    - public/build/
+
+setup_dependencies:
+  stage: setup
+  image: node:${NODE_VERSION}
+  script:
+    - npm install
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+  artifacts:
+    paths:
+      - vendor/
+      - node_modules/
+    expire_in: 1 week
+
+build_project:
+  stage: build
+  image: node:${NODE_VERSION}
+  script:
+    - npm run build
+    - php artisan optimize:clear
+    - php artisan optimize
+  needs: ["setup_dependencies"]
+  artifacts:
+    paths:
+      - public/build/
+      - bootstrap/cache/
+    expire_in: 1 week
+
+deploy_to_railway:
+  stage: deploy
+  image: node:${NODE_VERSION}
+  before_script:
+    - npm install -g railway@latest
+  script:
+    - railway login --token $RAILWAY_TOKEN
+    - railway up --project $RAILWAY_PROJECT_ID --detach
+    - railway run --project $RAILWAY_PROJECT_ID "php artisan migrate --force"
+  only:
+    - main
+  needs: ["build_project"]
