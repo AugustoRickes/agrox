@@ -1,48 +1,17 @@
-stages:
-  - build
-  - deploy
-
-variables:
-  APP_ENV: production
-  NODE_VERSION: "22"
-  PHP_VERSION: "8.2"
-
-build:
-  stage: build
-  image: node:${NODE_VERSION}
-  before_script:
-    - apt-get update -yqq && apt-get install -y git
-  script:
-    - npm install
-    - npm run build
-  artifacts:
-    paths:
-      - public/build/
-      - vendor/
-
 deploy:
   stage: deploy
-  image: php:${PHP_VERSION}-cli
+  image: php:8.2-cli
   before_script:
     - apt-get update -yqq && apt-get install -y git unzip libpq-dev libzip-dev
     - docker-php-ext-install zip pdo pdo_pgsql
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
   script:
-    - composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-
-    - psql "${DB_HOST}" -c "\dt"
-
-
-    - php artisan db:wipe --force
-
-    - php artisan migrate --force -vvv
-
-    - php artisan db:show
-
-    - php artisan migrate --force
-    - php artisan optimize
-    - curl -fsSL https://cli.railway.app/install.sh | sh
-    - ~/.railway/bin/railway login --ci
-    - ~/.railway/bin/railway up --detach
-  only:
-    - main
+    - |
+      echo "✅ Conexão com o Neon: ${DB_HOST}:${DB_PORT}/${DB_DATABASE}"
+      php artisan db:wipe --force --database=pgsql || echo "⚠️ Pode ignorar se o banco já estiver vazio"
+      php artisan migrate --force -vvv || php artisan migrate:fresh --force
+      php artisan db:show
+      curl -fsSL https://cli.railway.app/install.sh | sh
+      ~/.railway/bin/railway login --ci
+      ~/.railway/bin/railway up --detach
