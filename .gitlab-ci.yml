@@ -1,14 +1,7 @@
 deploy:
   stage: deploy
-  image: php:8.2-cli
-  before_script:
-    - apt-get update -yqq
-    - apt-get install -y git unzip libpq-dev libzip-dev
-    - docker-php-ext-install zip pdo pdo_pgsql
-    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
+  image: node:20-alpine
   script:
-    - composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-    - curl -fsSL https://cli.railway.app/install.sh | sh
-    - ~/.railway/bin/railway login --ci
-    - ~/.railway/bin/railway up --project $RAILWAY_PROJECT_ID --detach
+    - npm install -g @railway/cli
+    - railway login --ci -t $RAILWAY_TOKEN
+    - railway up --detach
