@@ -8,11 +8,7 @@ deploy:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
   script:
-    - >-
-      composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader &&
-      echo "✅ Verificando conexão com: ${DB_HOST}" &&
-      php artisan db:wipe --force --database=pgsql || echo "⚠️ Banco já vazio" &&
-      php artisan migrate --force &&
-      curl -fsSL https://cli.railway.app/install.sh | sh &&
-      ~/.railway/bin/railway login --ci &&
-      ~/.railway/bin/railway up --project $RAILWAY_PROJECT_ID --detach
+    - composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+    - curl -fsSL https://cli.railway.app/install.sh | sh
+    - ~/.railway/bin/railway login --ci
+    - ~/.railway/bin/railway up --project $RAILWAY_PROJECT_ID --detach
