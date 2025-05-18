@@ -1,23 +1,38 @@
-setup_dependencies:
-  stage: setup
-  image: ubuntu:22.04
+stages:
+  - build
+  - deploy
+
+variables:
+  APP_ENV: production
+  NODE_VERSION: "22"
+  PHP_VERSION: "8.2"
+
+build:
+  stage: build
+  image: node:${NODE_VERSION}
   before_script:
-    - apt-get update && apt-get install -y curl
-
-    - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-    - apt-get install -y nodejs
-    - npm install -g npm@latest
-
-    - /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
-
-    - php --version
-    - composer --version
-    - node --version
+    - apt-get update -yqq && apt-get install -y git
   script:
     - npm install
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - npm run build
   artifacts:
     paths:
+      - public/build/
       - vendor/
-      - node_modules/
-    expire_in: 1 week
+
+deploy:
+  stage: deploy
+  image: php:${PHP_VERSION}-cli
+  before_script:
+    - apt-get update -yqq && apt-get install -y git unzip libpq-dev libzip-dev
+    - docker-php-ext-install zip pdo pdo_pgsql
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  script:
+    - composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+    - php artisan migrate --force
+    - php artisan optimize
+    - curl -fsSL https://cli.railway.app/install.sh | sh
+    - ~/.railway/bin/railway login --ci
+    - ~/.railway/bin/railway up --detach
+  only:
+    - main
