@@ -29,6 +29,16 @@ deploy:
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
   script:
     - composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+    - psql "${DB_HOST}" -c "\dt"
+
+
+    - php artisan db:wipe --force
+
+    - php artisan migrate --force -vvv
+
+    - php artisan db:show
+
     - php artisan migrate --force
     - php artisan optimize
     - curl -fsSL https://cli.railway.app/install.sh | sh
