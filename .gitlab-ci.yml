@@ -1,18 +1,29 @@
+stages:
+  - .pre
+  - setup
+  - build
+  - test
+  - deploy
+  - .post
+
+variables:
+  NODE_VERSION: "22.15.0"
+  PHP_VERSION: "8.4.1"
+
+cache:
+  paths:
+    - vendor/
+    - node_modules/
+    - public/build/
+
 setup_dependencies:
   stage: setup
   image: ubuntu:22.04
   before_script:
     - apt-get update && apt-get install -y curl
-
+    - /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
     - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
     - apt-get install -y nodejs
-    - npm install -g npm@latest
-
-    - /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
-
-    - php --version
-    - composer --version
-    - node --version
   script:
     - npm install
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
@@ -21,3 +32,29 @@ setup_dependencies:
       - vendor/
       - node_modules/
     expire_in: 1 week
+
+build_project:
+  stage: build
+  image: node:${NODE_VERSION}
+  script:
+    - npm run build
+    - php artisan optimize:clear
+    - php artisan optimize
+  needs: ["setup_dependencies"]
+  artifacts:
+    paths:
+      - public/build/
+      - bootstrap/cache/
+    expire_in: 1 week
+
+deploy_to_railway:
+  stage: deploy
+  image: node:${NODE_VERSION}
+  before_script:
+    - npm install -g railway@latest
+  script:
+    - railway login --token $RAILWAY_TOKEN
+    - railway up --project $RAILWAY_PROJECT_ID --detach
+  only:
+    - main
+  needs: ["build_project"]
