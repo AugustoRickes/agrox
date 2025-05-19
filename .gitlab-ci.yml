@@ -2,6 +2,8 @@ deploy:
   stage: deploy
   image: node:20-alpine
   script:
-    - npm install -g @railway/cli
-    - railway login --ci -t $RAILWAY_TOKEN
-    - railway up --detach
+    - npm install @railway/cli
+    - npx railway login --ci -t $RAILWAY_TOKEN
+    - npx railway up --detach
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
