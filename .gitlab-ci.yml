@@ -1,9 +1,7 @@
 deploy:
-  stage: deploy
-  image: node:20-alpine
+  image: alpine
   script:
-    - npm install @railway/cli
-    - npx railway login --ci -t $RAILWAY_TOKEN
-    - npx railway up --detach
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - apk add curl
+    - sh -c "$(curl -sSL https://raw.githubusercontent.com/railwayapp/cli/master/install.sh)"
+    - ~/.railway/bin/railway login --ci -t $RAILWAY_TOKEN
+    - ~/.railway/bin/railway up --detach
