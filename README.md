@@ -156,3 +156,21 @@ bate na rota http://localhost:8000
 
 git checkout dev
 git pull origin dev
+
+## Docker e Containerização
+
+Esta branch inclui a configuração completa para rodar a aplicação em ambiente Docker, facilitando o setup de desenvolvimento e implementação em produção:
+
+- **Dockerfile:** Configuração para criar a imagem da aplicação baseada em PHP 8.2-FPM com todas as dependências necessárias.
+- **docker-compose.yml:** Orquestra os serviços necessários para execução local da aplicação.
+- **docker-entrypoint.sh:** Script de inicialização que configura automaticamente o ambiente, gerando chaves, executando migrações e otimizando a aplicação para produção.
+- **supervisord.conf:** Gerencia os processos dentro do container, garantindo que tanto o PHP quanto os assets sejam servidos corretamente.
+
+### Ambiente de Desenvolvimento
+
+Para executar a aplicação localmente com Docker:
+
+```bash
+docker compose build
+docker compose up -d
+```
