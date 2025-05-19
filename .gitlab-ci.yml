@@ -1,7 +1,7 @@
-deploy:
-  image: alpine
-  script:
-    - apk add curl
-    - sh -c "$(curl -sSL https://raw.githubusercontent.com/railwayapp/cli/master/install.sh)"
-    - ~/.railway/bin/railway login --ci -t $RAILWAY_TOKEN
-    - ~/.railway/bin/railway up --detach
+# deploy:
+#   image: alpine
+#   script:
+#     - apk add curl
+#     - sh -c "$(curl -sSL https://raw.githubusercontent.com/railwayapp/cli/master/install.sh)"
+#     - ~/.railway/bin/railway login --ci -t $RAILWAY_TOKEN
+#     - ~/.railway/bin/railway up --detach
