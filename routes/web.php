@@ -8,11 +8,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/home', function () {
-    return Inertia::render('Home');
+    return Inertia::render('Home/Index');
 })->name('home');
 
 Route::get('/vendas', function () {
-    return Inertia::render('Vendas');
+    return Inertia::render('Vendas/Index');
 })->name('vendas');
 
 Route::middleware(['auth', 'verified'])->group(function () {
