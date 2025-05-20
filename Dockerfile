@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     libzip-dev \
     libonig-dev \
+    libpq-dev \
+    postgresql-client \
     jpegoptim optipng pngquant gifsicle \
     vim \
     unzip \
