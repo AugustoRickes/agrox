@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
@@ -40,10 +40,8 @@ RUN apt-get install -y nodejs
 # Copy application files
 COPY . /var/www/html
 
-# Create SQLite database directory and file
-RUN mkdir -p /var/www/html/database
-RUN touch /var/www/html/database/database.sqlite
-RUN chmod -R 775 /var/www/html/database
+# postgresql
+RUN apt-get update && apt-get install -y libpq-dev
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html

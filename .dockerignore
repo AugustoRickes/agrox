@@ -1,0 +1,13 @@
+/node_modules
+/vendor
+.git
+.github
+.idea
+.vscode
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.yml
+npm-debug.log
+yarn-error.log
+# NÃO ignore o diretório database

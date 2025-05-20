@@ -20,8 +20,13 @@ echo "LOG_CHANNEL=${LOG_CHANNEL:-stack}" >> .env
 echo "LOG_LEVEL=${LOG_LEVEL:-debug}" >> .env
 
 # Configuração para SQLite
-echo "DB_CONNECTION=${DB_CONNECTION:-sqlite}" >> .env
-echo "DB_DATABASE=${DB_DATABASE:-/var/www/html/database/database.sqlite}" >> .env
+echo "DB_CONNECTION=${DB_CONNECTION:-postgres}" >> .env
+echo "DB_HOST=${DB_HOST:-localhost}" >> .env
+echo "DB_PORT=${DB_PORT:-5432}" >> .env
+echo "DB_DATABASE=${DB_DATABASE:-postgres}" >> .env
+echo "DB_USERNAME=${DB_USERNAME:-postgres}" >> .env
+echo "DB_PASSWORD=${DB_PASSWORD:-}" >> .env
+echo "DB_SSL_MODE=${DB_SSL_MODE:-prefer}" >> .env
 
 # Configurar cache para usar o filesystem em vez do banco de dados
 echo "CACHE_DRIVER=file" >> .env
@@ -30,14 +35,6 @@ echo "QUEUE_CONNECTION=sync" >> .env
 
 # Verificar permissões do arquivo .env
 chmod 666 .env
-
-# Criar arquivo SQLite se não existir
-if [ "$DB_CONNECTION" = "sqlite" ] || [ -z "$DB_CONNECTION" ]; then
-    echo "Usando SQLite como banco de dados"
-    mkdir -p database
-    touch database/database.sqlite
-    chmod 666 database/database.sqlite
-fi
 
 # Generate app key - forçar a geração e atualizar no arquivo .env
 echo "Gerando chave da aplicação..."
