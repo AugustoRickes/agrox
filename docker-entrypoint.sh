@@ -16,7 +16,7 @@ fi
 
 echo "APP_KEY=" >> .env
 echo "APP_DEBUG=${APP_DEBUG:-true}" >> .env
-echo "APP_URL=${APP_URL:-http://localhost}" >> .env
+echo "APP_URL=${APP_URL:-https://projeto-doc.onrender.com}" >> .env
 
 echo "LOG_CHANNEL=${LOG_CHANNEL:-stack}" >> .env
 echo "LOG_LEVEL=${LOG_LEVEL:-debug}" >> .env
