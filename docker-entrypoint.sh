@@ -8,15 +8,16 @@ echo "APP_ENV=${APP_ENV:-production}" >> .env
 # Configuração Render.com
 if [ "${RENDER:-false}" = "true" ]; then
   echo "APP_ENV=production" >> .env
+  echo "APP_URL=https://projeto-doc.onrender.com" >> .env
   echo "APP_DEBUG=true" >> .env
   echo "LOG_LEVEL=debug" >> .env
 else
   echo "APP_ENV=${APP_ENV:-local}" >> .env
+  echo "APP_URL=${APP_URL:-http://localhost}" >> .env
 fi
 
 echo "APP_KEY=" >> .env
 echo "APP_DEBUG=${APP_DEBUG:-true}" >> .env
-echo "APP_URL=${APP_URL:-http://localhost}" >> .env
 
 
 echo "LOG_CHANNEL=${LOG_CHANNEL:-stack}" >> .env
