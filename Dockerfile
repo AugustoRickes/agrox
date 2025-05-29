@@ -47,7 +47,7 @@ COPY composer.json composer.lock ./
 COPY package.json package-lock.json ./
 
 # Instala as dependências PHP
-RUN composer install --no-interaction --optimize-autoloader --no-dev
+RUN composer install --no-interaction --optimize-autoloader
 
 # Instala as dependências Node.js e compila os assets
 # Este passo deve ser feito *após* copiar os arquivos de dependência do frontend e antes do resto da aplicação
