@@ -44,7 +44,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # --- Cópia e Instalação de Dependências da Aplicação ---
 # Copia apenas os arquivos de configuração de dependência primeiro para aproveitar o cache do Docker
 COPY composer.json composer.lock ./
-COPY package.json package-lock.json ./ # Ou yarn.lock se estiver usando yarn
+COPY package.json package-lock.json ./
 
 # Instala as dependências PHP
 RUN composer install --no-interaction --optimize-autoloader --no-dev
