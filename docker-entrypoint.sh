@@ -8,6 +8,8 @@ echo "APP_ENV=${APP_ENV:-production}" >> .env
 # Configuração Render.com
 if [ "${RENDER:-false}" = "true" ]; then
   echo "APP_ENV=production" >> .env
+  echo "APP_DEBUG=true" >> .env
+  echo "LOG_LEVEL=debug" >> .env
 else
   echo "APP_ENV=${APP_ENV:-local}" >> .env
 fi
@@ -19,7 +21,7 @@ echo "APP_URL=${APP_URL:-http://localhost}" >> .env
 echo "LOG_CHANNEL=${LOG_CHANNEL:-stack}" >> .env
 echo "LOG_LEVEL=${LOG_LEVEL:-debug}" >> .env
 
-# Configuração para SQLite
+# Configuração para postgress
 echo "DB_CONNECTION=${DB_CONNECTION:-postgres}" >> .env
 echo "DB_HOST=${DB_HOST:-localhost}" >> .env
 echo "DB_PORT=${DB_PORT:-5432}" >> .env
