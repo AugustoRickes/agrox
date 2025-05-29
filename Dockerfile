@@ -53,7 +53,7 @@ RUN chown -R www-data:www-data /var/www/html \
 
 # Install dependencies
 RUN composer install --no-interaction --optimize-autoloader
-RUN npm install && npm run build
+RUN npm install && npm run dev
 
 # Create startup script
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
