@@ -1,50 +1,73 @@
-import { Head } from '@inertiajs/react';
-import { HiOutlineCash, HiOutlineShoppingCart, HiOutlineArchive } from 'react-icons/hi';
+import React from 'react';
 import { Link } from '@inertiajs/react';
+import { Card, CardContent } from '@/components/ui/card'; // shadcn/ui
+import { Menu, TrendingUp, ShoppingCart, Package } from 'lucide-react'; // ícones
 
 export default function HomePage() {
-    return (
-        <>
-            <Head title="Home" />
-            <div className="min-h-screen bg-white flex items-center justify-center p-10">
-                <div className="w-full max-w-sm bg-white border-2 rounded-lg shadow-lg flex flex-col items-center p-12">
+    const userName = "Produtor"; // essa linha é necessaria?
 
-                    {/* Logo */}
-                    <div className="mb-6">
-                        <img src="/agroxlogo.jpeg" alt="Logo" className="w-15 h-auto mx-auto" />
+    return (
+        <div className="min-h-screen bg-white flex items-center justify-center p-4">
+            <Card className="w-full max-w-md border-2 shadow-xl">
+                <CardContent className="p-6 space-y-6">
+                    {/* Cabeçalho */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 rounded-full overflow-hidden shadow-md">
+                                <img
+                                    src="/agroxlogo.jpeg"
+                                    alt="Logo AgroX"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <h1 className="text-xl font-bold text-green-800">AgroX</h1>
+                        </div>
+                        <Menu className="w-7 h-7 text-green-700 cursor-pointer hover:text-green-500 transition-colors duration-200" />
                     </div>
 
-                    {/* Menu de Opções */}
-                    <div className="flex flex-col items-center space-y-10 w-full">
+                    {/* Boas-vindas */}
+                    <div className="text-center">
+                        <p className="text-2xl font-extrabold text-green-900">Bem-vindo(a), Produtor!</p>
+                        <p className="text-gray-600 mt-1">Organização que colhe sucesso.</p>
+                    </div>
 
-                        {/* Fluxo de Caixa */}
-                        <div className="bg-gray-50 shadow-lg border border-gray-300 rounded-lg w-full p-8 text-center">
-                            <div className="flex items-center justify-center space-x-4">
-                                <HiOutlineCash className="text-4xl text-green-600" />
-                                <h3 className="text-2xl font-semibold">Fluxo de Caixa</h3>
-                            </div>
-                        </div>
-
-                        {/* Vendas (com link para a rota /vendas) */}
-                        <Link href="/vendas" className="w-full">
-                            <div className="bg-gray-50 shadow-lg border border-gray-300 rounded-lg w-full p-10 text-center hover:bg-gray-100 transition-colors">
-                                <div className="flex items-center justify-center space-x-4">
-                                    <HiOutlineShoppingCart className="text-4xl text-blue-600" />
-                                    <h3 className="text-2xl font-semibold">Vendas</h3>
-                                </div>
-                            </div>
+                    {/* Cards de navegação */}
+                    <div className="space-y-4">
+                        <Link href="/fluxo-de-caixa" className="block">
+                            <Card className="w-full border border-green-200 shadow-md hover:shadow-lg rounded-xl cursor-pointer transition-shadow duration-300">
+                                <CardContent className="flex items-center space-x-4 p-5">
+                                    <div className="p-3 bg-green-100 rounded-full">
+                                        <TrendingUp className="w-6 h-6 text-green-600" />
+                                    </div>
+                                    <span className="font-semibold text-gray-800 text-lg">Fluxo de Caixa</span>
+                                </CardContent>
+                            </Card>
                         </Link>
 
-                        {/* Produtos Cadastrados */}
-                        <div className="bg-gray-50 shadow-lg border border-gray-300 rounded-lg w-full p-6 text-center">
-                            <div className="flex items-center justify-center space-x-4">
-                                <HiOutlineArchive className="text-4xl text-yellow-600" />
-                                <h3 className="text-2xl font-semibold">Produtos Cadastrados</h3>
-                            </div>
-                        </div>
+                        <Link href="/venda" className="block">
+                            <Card className="w-full border border-green-200 shadow-md hover:shadow-lg rounded-xl cursor-pointer transition-shadow duration-300">
+                                <CardContent className="flex items-center space-x-4 p-5">
+                                    <div className="p-3 bg-green-100 rounded-full">
+                                        <ShoppingCart className="w-6 h-6 text-green-600" />
+                                    </div>
+                                    <span className="font-semibold text-gray-800 text-lg">Venda</span>
+                                </CardContent>
+                            </Card>
+                        </Link>
+
+                        <Link href="/cadastro-produtos" className="block">
+                            <Card className="w-full border border-green-200 shadow-md hover:shadow-lg rounded-xl cursor-pointer transition-shadow duration-300">
+                                <CardContent className="flex items-center space-x-4 p-5">
+                                    <div className="p-3 bg-green-100 rounded-full">
+                                        <Package className="w-6 h-6 text-green-600" />
+                                    </div>
+                                    <span className="font-semibold text-gray-800 text-lg">Produtos Cadastrados</span>
+                                </CardContent>
+                            </Card>
+                        </Link>
                     </div>
-                </div>
-            </div>
-        </>
+                </CardContent>
+            </Card>
+        </div>
     );
 }
