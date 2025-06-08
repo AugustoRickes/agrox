@@ -44,7 +44,7 @@ export default function HomePage() {
                             </Card>
                         </Link>
 
-                        <Link href="/venda" className="block">
+                        <Link href="/vendas" className="block">
                             <Card className="w-full border border-green-200 shadow-md hover:shadow-lg rounded-xl cursor-pointer transition-shadow duration-300">
                                 <CardContent className="flex items-center space-x-4 p-5">
                                     <div className="p-3 bg-green-100 rounded-full">
