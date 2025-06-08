@@ -15,6 +15,10 @@ Route::get('/vendas', function () {
     return Inertia::render('Vendas/Index');
 })->name('vendas');
 
+Route::get('/cadastro-produtos', function () {
+    return Inertia::render('cadastro-produtos/Index');
+})->name('cadastro-produtos');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
