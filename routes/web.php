@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\SaleController;
+use App\Models\Product;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -12,8 +14,14 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::get('/vendas', function () {
-    return Inertia::render('Vendas/Index');
+    return Inertia::render('Vendas/Index', [
+        'products' => Product::all()
+    ]);
 })->name('vendas');
+
+// Rotas para vendas
+Route::post('/vendas', [SaleController::class, 'store'])->name('vendas.store');
+Route::get('/vendas/historico', [SaleController::class, 'index'])->name('vendas.index');
 
 Route::get('/cadastro-produtos', function () {
     return Inertia::render('cadastro-produtos/Index');
