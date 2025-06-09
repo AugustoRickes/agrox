@@ -174,3 +174,10 @@ Para executar a aplicação localmente com Docker:
 docker compose build
 docker compose up -d
 ```
+
+# rodar os testes unitarios
+
+```bash
+php artisan test --filter=SaleTest
+php artisan test --filter=SaleControllerTest
+```
