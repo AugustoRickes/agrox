@@ -14,35 +14,42 @@ class SaleController extends Controller
 {
     public function store(StoreSaleRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        // Buscar o produto
+        $product = Product::findOrFail($request->product_id);
+        $unitPrice = $product->price;
+        $totalAmount = $unitPrice * $request->quantity;
 
-            // Busca o produto
-            $product = Product::findOrFail($request->product_id);
-            $unitPrice = $product->price;
-            $totalAmount = $unitPrice * $request->quantity;
+        // Valida e calcula o troco (apenas para pagamento em dinheiro)
+        $change = 0;
+        $receivedAmount = null;
 
-            // Valida e calcula o troco (apenas para pagamento em dinheiro)
-            $change = 0;
-            $receivedAmount = null;
+        if ($request->payment_type === 'cash') {
+            $receivedAmount = $request->received_amount_cash;
 
-            if ($request->payment_type === 'cash') {
-                $receivedAmount = $request->received_amount_cash;
-
-                if ($receivedAmount < $totalAmount) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Valor recebido é menor que o total da venda',
-                        'errors' => ['received_amount_cash' => ['Valor insuficiente']]
-                    ], 422);
-                }
-
-                $change = $receivedAmount - $totalAmount;
+            if ($receivedAmount < $totalAmount) {
+                return back()->withErrors([
+                    'received_amount_cash' => 'Valor recebido é menor que o total da venda'
+                ]);
             }
+
+            $change = $receivedAmount - $totalAmount;
+        }
+
+        // Transação para criar venda, item e pagamento
+        $result = DB::transaction(function () use ($request, $product, $totalAmount, $receivedAmount, $change) {
+            // Busca ou cria um usuário padrão (necessário por causa do constraint)
+            $user = \App\Models\User::firstOrCreate(
+                ['email' => 'admin@agrox.com'],
+                [
+                    'name' => 'Usuário Padrão',
+                    'email' => 'admin@agrox.com',
+                    'password' => bcrypt('password123')
+                ]
+            );
 
             // Cria a venda
             $sale = Sale::create([
-                'user_id' => auth()->id() ?? 1, // Fallback para desenvolvimento
+                'user_id' => $user->id,
                 'sale_date' => now(),
                 'total_amount' => $totalAmount,
                 'is_synced' => false,
@@ -53,10 +60,10 @@ class SaleController extends Controller
                 'sale_id' => $sale->id,
                 'product_id' => $product->id,
                 'quantity' => $request->quantity,
-                'unit_price' => $unitPrice,
+                'unit_price' => $product->price,
             ]);
 
-            // Cria o pagamento
+            // Cria o pagamento com lógica de troco
             Payment::create([
                 'sale_id' => $sale->id,
                 'type' => $request->payment_type,
@@ -66,37 +73,23 @@ class SaleController extends Controller
                 'is_synced' => false,
             ]);
 
-            DB::commit();
-
-            // Log da transação
-            Log::info('Venda realizada', [
-                'sale_id' => $sale->id,
-                'total_amount' => $totalAmount,
-                'payment_type' => $request->payment_type,
-                'change' => $change
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'sale_id' => $sale->id,
-                'total_amount' => $totalAmount,
+            return [
+                'sale' => $sale,
                 'change' => $change,
-                'message' => 'Venda realizada com sucesso!'
-            ]);
+                'total_amount' => $totalAmount
+            ];
+        });
 
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            Log::error('Erro ao processar venda', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro interno do servidor'
-            ], 500);
-        }
+        // Retorna com sucesso usando Inertia
+        return back()->with([
+            'success' => true,
+            'message' => 'Venda realizada com sucesso!',
+            'sale_data' => [
+                'sale_id' => $result['sale']->id,
+                'total_amount' => $result['total_amount'],
+                'change' => $result['change']
+            ]
+        ]);
     }
 
     public function index()
