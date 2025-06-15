@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -22,18 +22,38 @@ interface Product {
 
 interface Props {
     products: Product[];
+    flash?: {
+        success?: boolean;
+        message?: string;
+        sale_data?: {
+            sale_id: number;
+            total_amount: number;
+            change: number;
+        };
+    };
 }
 
 export default function VendaForm({ products = [] }: Props) {
     const [calculatedChange, setCalculatedChange] = useState(0);
     const [total, setTotal] = useState(0);
+    const { flash, errors } = usePage().props;
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, reset } = useForm({
         product_id: '',
         quantity: 1,
         payment_type: '',
         received_amount_cash: '',
     });
+
+    // Exibir mensagem de sucesso da sessão
+    useEffect(() => {
+        if (flash?.success) {
+            alert(flash.message || 'Venda realizada com sucesso!');
+            if (flash?.sale_data?.change > 0) {
+                alert(`Troco: R$ ${flash.sale_data.change.toFixed(2)}`);
+            }
+        }
+    }, [flash]);
 
     // Calcula o total quando produto ou quantidade mudam
     useEffect(() => {
@@ -75,18 +95,14 @@ export default function VendaForm({ products = [] }: Props) {
         }
 
         post('/vendas', {
-            onSuccess: (response) => {
-                alert('Venda realizada com sucesso!');
-                // Reset form
+            onSuccess: () => {
+                // Reset form após sucesso
                 reset();
                 setTotal(0);
                 setCalculatedChange(0);
             },
             onError: (errors) => {
                 console.error('Erro na venda:', errors);
-                if (errors.message) {
-                    alert(errors.message);
-                }
             }
         });
     };
@@ -95,7 +111,7 @@ export default function VendaForm({ products = [] }: Props) {
         <>
             <Head title="Vendas" />
             <div className="min-h-screen bg-white flex items-center justify-center p-3">
-                <Card className="w-full max-w-md border border-2 shadow-xl">
+                <Card className="w-full max-w-md border-2 shadow-xl">
                     <CardContent className="p-8 space-y-6">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 text-2xl font-bold text-green-800">
@@ -116,11 +132,7 @@ export default function VendaForm({ products = [] }: Props) {
                                     </SelectTrigger>
                                     <SelectContent>
                                         {products.map((product) => {
-                                            // Garantir que price seja tratado como número
-                                            const price = typeof product.price === 'string' ?
-                                                parseFloat(product.price) :
-                                                Number(product.price);
-
+                                            const price = Number(product.price) || 0;
                                             return (
                                                 <SelectItem key={product.id} value={product.id.toString()}>
                                                     {product.name} - R$ {price.toFixed(2)}
@@ -220,6 +232,12 @@ export default function VendaForm({ products = [] }: Props) {
                                 </div>
                             )}
 
+                            {errors.general && (
+                                <div className="text-red-500 text-sm text-center">
+                                    {errors.general}
+                                </div>
+                            )}
+
                             <div className="flex gap-3 pt-4">
                                 <Button
                                     type="submit"
@@ -233,7 +251,7 @@ export default function VendaForm({ products = [] }: Props) {
                                     asChild
                                     className="flex-1 bg-gray-100 hover:bg-gray-200 border border-black text-black"
                                 >
-                                    <Link href="/home">Cancelar</Link>
+                                    <Link href="/">Cancelar</Link>
                                 </Button>
                             </div>
                         </form>
