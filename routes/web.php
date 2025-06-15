@@ -5,11 +5,11 @@ use Inertia\Inertia;
 use App\Http\Controllers\SaleController;
 use App\Models\Product;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+// Route::get('/', function () {
+//     return Inertia::render('welcome');
+// })->name('home');
 
-Route::get('/home', function () {
+Route::get('/', function () {
     return Inertia::render('Home/Index');
 })->name('home');
 
