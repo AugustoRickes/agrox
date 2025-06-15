@@ -139,6 +139,7 @@ git push origin feature/coloca-o-numero-da-issue-aqui
 git checkout main
 git pull origin main
 git merge dev
+git push origin main
 
 # rodando o projeto local
 
