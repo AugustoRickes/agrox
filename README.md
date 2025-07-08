@@ -181,4 +181,5 @@ docker compose up -d
 ```bash
 php artisan test --filter=SaleTest
 php artisan test --filter=SaleControllerTest
+php artisan test --filter=ProductControllerTest
 ```
