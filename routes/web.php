@@ -27,10 +27,10 @@ Route::get('/vendas/historico', [SaleController::class, 'index'])->name('vendas.
 Route::get('/cadastro-produtos', [ProductController::class, 'index'])->name('cadastro-produtos');
 
 // Rotas para produtos (protegidas por autenticação)
-Route::middleware('auth')->group(function () {
+// Route::middleware('auth')->group(function () {
     Route::post('/cadastro-produtos', [ProductController::class, 'store'])->name('produtos.store');
     Route::delete('/produtos/{product}', [ProductController::class, 'destroy'])->name('produtos.destroy');
-});
+// });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
