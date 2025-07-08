@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ProductController;
 use App\Models\Product;
 
 // Route::get('/', function () {
@@ -23,9 +24,13 @@ Route::get('/vendas', function () {
 Route::post('/vendas', [SaleController::class, 'store'])->name('vendas.store');
 Route::get('/vendas/historico', [SaleController::class, 'index'])->name('vendas.index');
 
-Route::get('/cadastro-produtos', function () {
-    return Inertia::render('cadastro-produtos/Index');
-})->name('cadastro-produtos');
+Route::get('/cadastro-produtos', [ProductController::class, 'index'])->name('cadastro-produtos');
+
+// Rotas para produtos (protegidas por autenticação)
+Route::middleware('auth')->group(function () {
+    Route::post('/cadastro-produtos', [ProductController::class, 'store'])->name('produtos.store');
+    Route::delete('/produtos/{product}', [ProductController::class, 'destroy'])->name('produtos.destroy');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
