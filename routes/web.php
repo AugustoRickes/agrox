@@ -32,6 +32,14 @@ Route::get('/cadastro-produtos', [ProductController::class, 'index'])->name('cad
     Route::delete('/produtos/{product}', [ProductController::class, 'destroy'])->name('produtos.destroy');
 // });
 
+Route::get('fluxo-de-caixa', function () {
+    return Inertia::render('Fluxo-de-caixa/Index');
+})->name('fluxo-de-caixa');
+
+Route::get('fluxo-de-caixa/ciclos', function () {
+    return Inertia::render('Fluxo-de-caixa/Ciclos');
+})->name('fluxo-de-caixa.ciclos');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
