@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CashFlowController;
 use App\Models\Product;
 
 // Route::get('/', function () {
@@ -32,9 +33,7 @@ Route::get('/cadastro-produtos', [ProductController::class, 'index'])->name('cad
     Route::delete('/produtos/{product}', [ProductController::class, 'destroy'])->name('produtos.destroy');
 // });
 
-Route::get('fluxo-de-caixa', function () {
-    return Inertia::render('Fluxo-de-caixa/Index');
-})->name('fluxo-de-caixa');
+Route::get('fluxo-de-caixa', [CashFlowController::class, 'index'])->name('fluxo-de-caixa');
 
 Route::get('fluxo-de-caixa/ciclos', function () {
     return Inertia::render('Fluxo-de-caixa/Ciclos');
