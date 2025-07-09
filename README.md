@@ -179,6 +179,7 @@ docker compose up -d
 # rodar os testes unitarios
 
 ```bash
+php artisan test
 php artisan test --filter=SaleTest
 php artisan test --filter=SaleControllerTest
 php artisan test --filter=ProductControllerTest
