@@ -9,9 +9,14 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +38,9 @@ class UserResource extends Resource
                     ->label('Nome')
                     ->required()
                     ->maxLength(255),
+                Toggle::make('is_active')
+                    ->label('Acesso Ativo')
+                    ->required(),
                 TextInput::make('email')
                     ->label('E-mail')
                     ->email()
@@ -58,13 +66,14 @@ class UserResource extends Resource
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('name')->label('Nome')->searchable(),
                 TextColumn::make('email')->label('E-mail')->searchable(),
+                ToggleColumn::make('is_active')->label('Acesso Ativo'),
                 TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
             ->filters([
-                //
+                TrashedFilter::make(),
             ])
             ->actions([
                 EditAction::make(),
@@ -73,6 +82,8 @@ class UserResource extends Resource
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
                 ]),
             ]);
     }
