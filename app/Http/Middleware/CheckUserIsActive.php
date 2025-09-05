@@ -22,7 +22,7 @@ class CheckUserIsActive
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect('/')->with('error', 'Sua conta foi desativada. Entre em contato com o suporte.');
+            return redirect('/login')->with('error', 'Sua conta foi desativada. Entre em contato com o suporte.');
         }
 
         return $next($request);
