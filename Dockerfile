@@ -22,8 +22,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Copia apenas os arquivos de dependência do Composer
 COPY composer.json composer.lock ./
 
-# Instala apenas as dependências de produção, otimizado
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+# Instala dependências SEM executar scripts
+RUN composer install --no-interaction --no-dev --optimize-autoloader --no-scripts
 
 # --- Estágio 2: Builder de Assets Node.js ---
 FROM node:18 as asset_builder
@@ -68,11 +68,17 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl intl
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
+# Instala o Composer para ser usado no passo seguinte
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # Copia o código da aplicação (sem vendor e node_modules)
 COPY . .
 
 # Copia as dependências do Composer do estágio \'vendor_builder\'
 COPY --from=vendor_builder /var/www/html/vendor ./vendor
+
+# Gera o autoloader e executa os scripts do composer (package:discover, etc)
+RUN composer dump-autoload --optimize --no-dev
 
 # Copia os assets buildados do estágio \'asset_builder\'
 COPY --from=asset_builder /var/www/html/public/build ./public/build
