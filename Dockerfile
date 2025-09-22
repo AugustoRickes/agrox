@@ -3,17 +3,18 @@ FROM php:8.3-fpm as vendor_builder
 
 WORKDIR /var/www/html
 
-# Instala dependências do sistema, incluindo libicu-dev para a extensão intl
+# Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
     libpq-dev \
     libzip-dev \
-    libicu-dev
+    libicu-dev \
+    libonig-dev
 
-# Instala extensões PHP, incluindo intl
-RUN docker-php-ext-install pdo pdo_pgsql zip intl
+# Instala extensões PHP
+RUN docker-php-ext-install pdo pdo_pgsql zip intl mbstring
 
 # Instala o Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -46,7 +47,7 @@ FROM php:8.3-fpm as production
 
 WORKDIR /var/www/html
 
-# Instala dependências do sistema para a imagem final, incluindo libicu-dev
+# Instala dependências do sistema para a imagem final
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg62-turbo-dev \
@@ -58,10 +59,11 @@ RUN apt-get update && apt-get install -y \
     jpegoptim optipng pngquant gifsicle \
     supervisor \
     libicu-dev \
+    libonig-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Instala extensões PHP, incluindo intl
+# Instala extensões PHP
 RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl intl
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
