@@ -1,6 +1,7 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useEffect } from 'react';
+import { toast } from 'sonner';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -27,11 +28,27 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         password: '',
         remember: false,
     });
+    const { props } = usePage();
+
+    useEffect(() => {
+        const { success, error } = props as { success?: string; error?: string };
+        if (success) {
+            toast.success(success);
+        }
+        if (error) {
+            toast.error(error);
+        }
+    }, [props]);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('login'), {
             onFinish: () => reset('password'),
+            onError: (errors) => {
+                if (errors.email) {
+                    toast.error(errors.email);
+                }
+            },
         });
     };
 

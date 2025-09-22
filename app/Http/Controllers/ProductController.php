@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('created_at', 'desc')->get();
+        $products = Product::where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('cadastro-produtos/Index', [
             'products' => $products
@@ -26,6 +26,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $product = Product::create([
+            'user_id' => auth()->id(),
             'name' => $request->name,
             'price' => $request->price
         ]);
@@ -42,6 +43,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if ($product->user_id !== auth()->id()) {
+            abort(403, 'Acesso não autorizado.');
+        }
+
         $product->delete();
 
         return back()->with([

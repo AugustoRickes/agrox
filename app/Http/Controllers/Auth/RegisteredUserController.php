@@ -40,12 +40,13 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_active' => false,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        session()->flash('success', 'Sua conta foi criada e está pendente de aprovação. Você receberá um e-mail quando sua conta for ativada.');
 
-        return to_route('dashboard');
+        return to_route('login');
     }
 }

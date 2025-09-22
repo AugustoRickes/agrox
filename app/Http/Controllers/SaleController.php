@@ -37,19 +37,9 @@ class SaleController extends Controller
 
         // Transação para criar venda, item e pagamento
         $result = DB::transaction(function () use ($request, $product, $totalAmount, $receivedAmount, $change) {
-            // Busca ou cria um usuário padrão (necessário por causa do constraint)
-            $user = \App\Models\User::firstOrCreate(
-                ['email' => 'admin@agrox.com'],
-                [
-                    'name' => 'Usuário Padrão',
-                    'email' => 'admin@agrox.com',
-                    'password' => bcrypt('password123')
-                ]
-            );
-
-            // Cria a venda
+            // Cria a venda usando o ID do usuário autenticado
             $sale = Sale::create([
-                'user_id' => $user->id,
+                'user_id' => auth()->id(),
                 'sale_date' => now(),
                 'total_amount' => $totalAmount,
                 'is_synced' => false,
@@ -95,6 +85,7 @@ class SaleController extends Controller
     public function index()
     {
         $sales = Sale::with(['saleItems.product', 'payments'])
+                    ->where('user_id', auth()->id())
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
 
