@@ -41,6 +41,7 @@ class CashFlowController extends Controller
 
         // busca vendas periodo
         $sales = Sale::with(['saleItems.product', 'payments'])
+            ->where('user_id', auth()->id())
             ->whereDate('sale_date', '>=', $startDate->format('Y-m-d'))
             ->whereDate('sale_date', '<=', $endDate->format('Y-m-d'))
             ->orderBy('sale_date', 'desc')
@@ -52,7 +53,8 @@ class CashFlowController extends Controller
         $saldoPeriodo = $totalEntradas - $totalSaidas;
 
         // calcula saldo acumulado ate o final do periodo
-        $saldoAcumulado = Sale::where('sale_date', '<=', $endDate)->sum('total_amount');
+        $saldoAcumulado = Sale::where('user_id', auth()->id())
+            ->where('sale_date', '<=', $endDate)->sum('total_amount');
 
         $weekOptions = $this->getWeekOptions();
         $monthOptions = $this->getMonthOptions();
