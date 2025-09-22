@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        session()->flash('message', 'Sua conta foi criada e está pendente de aprovação. Você receberá um e-mail quando sua conta for ativada.');
+        session()->flash('success', 'Sua conta foi criada e está pendente de aprovação. Você receberá um e-mail quando sua conta for ativada.');
 
         return to_route('login');
     }

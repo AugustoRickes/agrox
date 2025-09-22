@@ -31,19 +31,24 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     const { props } = usePage();
 
     useEffect(() => {
-        const flash = props.flash as { message?: string; error?: string };
-        if (flash?.message) {
-            toast.success(flash.message);
+        const { success, error } = props as { success?: string; error?: string };
+        if (success) {
+            toast.success(success);
         }
-        if (flash?.error) {
-            toast.error(flash.error);
+        if (error) {
+            toast.error(error);
         }
-    }, [props.flash]);
+    }, [props]);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('login'), {
             onFinish: () => reset('password'),
+            onError: (errors) => {
+                if (errors.email) {
+                    toast.error(errors.email);
+                }
+            },
         });
     };
 
