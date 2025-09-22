@@ -18,8 +18,9 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Administrador AgroX',
                 'email' => 'admin@agrox.com',
-                'password' => Hash::make('password123'),
+                'password' => '123456',
                 'email_verified_at' => now(),
+                'is_admin' => true,
             ]
         );
 
@@ -28,7 +29,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Usuário Teste',
                 'email' => 'test@example.com',
-                'password' => Hash::make('password'),
+                'password' => '123456',
                 'email_verified_at' => now(),
             ]
         );
