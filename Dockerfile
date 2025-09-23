@@ -1,5 +1,5 @@
 
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 # Set working directory
 WORKDIR /var/www/html
 # Install dependencies (mantido como está)
@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 # Clear cache (mantido como está)
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install extensions (mantido como está)
-RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl
+RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl intl
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 # Install composer (mantido como está)
