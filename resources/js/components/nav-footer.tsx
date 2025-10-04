@@ -21,7 +21,7 @@ export function NavFooter({
                                 className="text-neutral-600 hover:text-neutral-800"
                             >
                                 <a href={item.href} target="_blank" rel="noopener noreferrer">
-                                    {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
+                                    {item.icon && <Icon iconNode={item.icon} className="h-6 w-6" />}
                                     <span>{item.title}</span>
                                 </a>
                             </SidebarMenuButton>
