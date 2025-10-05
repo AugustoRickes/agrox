@@ -37,6 +37,7 @@ export default function VendaForm({ products = [] }: Props) {
     const [calculatedChange, setCalculatedChange] = useState(0);
     const [total, setTotal] = useState(0);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [qrCodeData, setQrCodeData] = useState('');
     const { flash, errors } = usePage().props;
 
     const { data, setData, post, processing, reset } = useForm({
@@ -84,6 +85,16 @@ export default function VendaForm({ products = [] }: Props) {
             setCalculatedChange(0);
         }
     }, [data.received_amount_cash, data.payment_type, total]);
+
+    // Gerar QR Code para PIX
+    useEffect(() => {
+        if (data.payment_type === 'pix' && total > 0) {
+            const pixPayload = '00020126580014BR.GOV.BCB.PIX013625d6d960-eb3b-4dce-a0d8-de55f473bd0a5204000053039865802BR592548.895.203 AUGUSTO RICKES6009SAO PAULO610805409000622505216TuP2BP4YXsPRel19zjlk63047264';
+            setQrCodeData(`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pixPayload)}`);
+        } else {
+            setQrCodeData('');
+        }
+    }, [data.payment_type, total]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -239,6 +250,32 @@ export default function VendaForm({ products = [] }: Props) {
                                     </div>
                                     {errors.payment_type && <span className="text-red-500 text-sm">{errors.payment_type}</span>}
                                 </div>
+
+                                {data.payment_type === 'pix' && qrCodeData && (
+                                    <Card className="border border-green-200 shadow-md">
+                                        <CardContent className="p-6 space-y-4">
+                                            <div className="text-center">
+                                                <Label className="text-lg font-semibold text-gray-700 mb-4 block">
+                                                    QR Code PIX - R$ {total.toFixed(2)}
+                                                </Label>
+                                                <div className="flex justify-center mb-4">
+                                                    <img
+                                                        src={qrCodeData}
+                                                        alt="QR Code PIX"
+                                                        className="border border-gray-300 rounded-lg"
+                                                    />
+                                                </div>
+                                                <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                                                    <p className="font-medium mb-1">Chave PIX:</p>
+                                                    <p className="font-mono text-xs break-all">25d6d960-eb3b-4dce-a0d8-de55f473bd0a</p>
+                                                </div>
+                                                <p className="text-sm text-gray-500 mt-2">
+                                                    Escaneie o QR Code ou use a chave PIX acima
+                                                </p>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                )}
 
                                 {data.payment_type === 'cash' && (
                                     <Card className="border border-green-200 shadow-md">
