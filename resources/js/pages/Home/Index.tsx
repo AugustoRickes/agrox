@@ -7,7 +7,6 @@ export default function HomePage() {
     const userName = "Produtor"; // essa linha é necessaria?
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4">
             <Card className="w-full max-w-md border-2 shadow-xl">
                 <CardContent className="p-6 space-y-6">
                     {/* Cabeçalho */}
@@ -68,6 +67,5 @@ export default function HomePage() {
                     </div>
                 </CardContent>
             </Card>
-        </div>
     );
 }
