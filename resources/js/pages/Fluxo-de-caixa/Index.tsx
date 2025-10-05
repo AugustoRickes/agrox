@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Head, Link, router } from "@inertiajs/react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { BarChart3 } from "lucide-react"
+import { BarChart3, ArrowLeft } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
@@ -94,40 +94,48 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
     return (
         <>
             <Head title="Fluxo de Caixa" />
-            <div className="min-h-screen bg-white flex items-center justify-center p-8">
-                <Card className="border-2 shadow-xl w-[500px]">
-                    <CardContent className="p-10 space-y-6">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-2xl font-bold text-green-800">
-                                <BarChart3 className="w-7 h-7 text-green-600" />
-                                Fluxo de Caixa
-                            </div>
+            <div className="min-h-screen bg-gray-50 flex flex-col">
+                {/* Cabeçalho */}
+                <header className="bg-white shadow-sm p-4">
+                    <div className="flex items-center justify-between max-w-lg mx-auto">
+                        <Link href="/" className="text-green-700 hover:text-green-500 transition-colors duration-200">
+                            <ArrowLeft className="w-6 h-6" />
+                        </Link>
+                        <div className="flex items-center gap-3 text-2xl font-bold text-green-800">
+                            <BarChart3 className="w-7 h-7 text-green-600" />
+                            Fluxo de Caixa
                         </div>
+                        <div className="w-6"></div> {/* Spacer para centralizar */}
+                    </div>
+                </header>
 
-                        <div className="space-y-4">
+                {/* Conteúdo principal */}
+                <main className="flex-1 p-6">
+                    <div className="max-w-lg mx-auto space-y-6">
+                        <div className="space-y-6">
                             <div>
-                                <Label>Período</Label>
+                                <Label className="text-lg font-semibold text-gray-700 mb-2 block">Período</Label>
                                 <Select value={period} onValueChange={handlePeriodChange}>
-                                    <SelectTrigger className="w-full bg-white border border-black">
+                                    <SelectTrigger className="w-full bg-white border border-black h-12 text-lg">
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="week">Semanal</SelectItem>
-                                        <SelectItem value="month">Mensal</SelectItem>
+                                        <SelectItem value="week" className="text-lg py-3">Semanal</SelectItem>
+                                        <SelectItem value="month" className="text-lg py-3">Mensal</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
 
                             <div>
-                                <Label>Fluxo {periodLabel}</Label>
+                                <Label className="text-lg font-semibold text-gray-700 mb-2 block">Fluxo {periodLabel}</Label>
                                 {period === 'week' ? (
                                     <Select value={selectedWeek} onValueChange={handleWeekChange}>
-                                        <SelectTrigger className="w-full bg-white border border-black">
+                                        <SelectTrigger className="w-full bg-white border border-black h-12 text-lg">
                                             <SelectValue placeholder="Selecione uma semana" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(weekOptions).map(([value, label]) => (
-                                                <SelectItem key={value} value={value}>
+                                                <SelectItem key={value} value={value} className="text-lg py-3">
                                                     {label}
                                                 </SelectItem>
                                             ))}
@@ -135,12 +143,12 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                                     </Select>
                                 ) : (
                                     <Select value={selectedMonth.toString()} onValueChange={(value) => handleMonthChange(parseInt(value))}>
-                                        <SelectTrigger className="w-full bg-white border border-black">
+                                        <SelectTrigger className="w-full bg-white border border-black h-12 text-lg">
                                             <SelectValue placeholder="Selecione um mês" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(monthOptions).map(([value, label]) => (
-                                                <SelectItem key={value} value={value}>
+                                                <SelectItem key={value} value={value} className="text-lg py-3">
                                                     {label}
                                                 </SelectItem>
                                             ))}
@@ -150,79 +158,75 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                             </div>
                         </div>
 
-                        <div className="space-y-4 text-sm">
-                            <div className="flex justify-between">
-                                <span>Entradas</span>
-                                <span className="text-green-600 font-semibold">
-                                    {formatCurrency(cashFlow.totalEntradas)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span>Saídas</span>
-                                <span className="text-red-600 font-semibold">
-                                    {formatCurrency(cashFlow.totalSaidas)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span>Saldo {periodLabel}</span>
-                                <span className="font-semibold">
-                                    {formatCurrency(cashFlow.saldoPeriodo)}
-                                </span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span>Saldo Acumulado</span>
-                                <span className="font-semibold">
-                                    {formatCurrency(cashFlow.saldoAcumulado)}
-                                </span>
-                            </div>
-                        </div>
+                        <Card className="border border-green-200 shadow-md">
+                            <CardContent className="p-8 space-y-6">
+                                <div className="space-y-6 text-base">
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="font-medium text-gray-700">Entradas</span>
+                                        <span className="text-green-600 font-bold text-lg">
+                                            {formatCurrency(cashFlow.totalEntradas)}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="font-medium text-gray-700">Saídas</span>
+                                        <span className="text-red-600 font-bold text-lg">
+                                            {formatCurrency(cashFlow.totalSaidas)}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="font-medium text-gray-700">Saldo {periodLabel}</span>
+                                        <span className="font-bold text-lg">
+                                            {formatCurrency(cashFlow.saldoPeriodo)}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="font-medium text-gray-700">Saldo Acumulado</span>
+                                        <span className="font-bold text-lg">
+                                            {formatCurrency(cashFlow.saldoAcumulado)}
+                                        </span>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
 
                         {cashFlow.sales.length > 0 && (
-                            <div className="space-y-2">
-                                <Label className="text-base font-semibold text-green-800">
-                                    Vendas do Período ({cashFlow.sales.length})
-                                </Label>
-                                <div className="max-h-32 overflow-y-auto space-y-1">
-                                    {cashFlow.sales.map((sale) => (
-                                        <div
-                                            key={sale.id}
-                                            className="flex justify-between items-center text-xs border-b py-1"
-                                        >
-                                            <div>
-                                                <div className="font-medium">{sale.sale_date}</div>
-                                                <div className="text-gray-600">
-                                                    {sale.items.map(item => item.product_name).join(', ')}
+                            <Card className="border border-green-200 shadow-md">
+                                <CardContent className="p-6 space-y-2">
+                                    <Label className="text-base font-semibold text-green-800">
+                                        Vendas do Período ({cashFlow.sales.length})
+                                    </Label>
+                                    <div className="max-h-32 overflow-y-auto space-y-1">
+                                        {cashFlow.sales.map((sale) => (
+                                            <div
+                                                key={sale.id}
+                                                className="flex justify-between items-center text-xs border-b py-1"
+                                            >
+                                                <div>
+                                                    <div className="font-medium">{sale.sale_date}</div>
+                                                    <div className="text-gray-600">
+                                                        {sale.items.map(item => item.product_name).join(', ')}
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <div className="font-semibold text-green-600">
+                                                        {formatCurrency(sale.total_amount)}
+                                                    </div>
+                                                    <div className="text-gray-500 capitalize">
+                                                        {sale.payment_type === 'cash' ? 'Dinheiro' : 'PIX'}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="text-right">
-                                                <div className="font-semibold text-green-600">
-                                                    {formatCurrency(sale.total_amount)}
-                                                </div>
-                                                <div className="text-gray-500 capitalize">
-                                                    {sale.payment_type === 'cash' ? 'Dinheiro' : 'PIX'}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
                         )}
 
-                        <div className="text-xs text-center text-green-500 pt-2 italic">
+                        <div className="text-sm text-center text-green-500 pt-2 italic">
                             ● Ciclo Aberto
                         </div>
-
-                        <div className="flex justify-center pt-4">
-                            <Button
-                                type="button"
-                                asChild
-                                className="bg-gray-100 hover:bg-gray-200 border border-black text-black"
-                            >
-                                <Link href="/">Voltar</Link>
-                            </Button>
-                        </div>
-                    </CardContent>
-                </Card>
+                    </div>
+                </main>
             </div>
         </>
     )
