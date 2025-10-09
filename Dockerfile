@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     locales \
     zip \
     libzip-dev \
+    libicu-dev \
     libonig-dev \
     libpq-dev \
     postgresql-client \
