@@ -20,11 +20,13 @@ services:
       - DB_PASSWORD=postgres
     depends_on:
         - postgres
+    networks:
+      - ambrosia-network
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_PASSWORD: senha
-      POSTGRES_DB: seu_db
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: agrox
     ports:
       - "5432:5432"
     networks:
