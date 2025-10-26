@@ -34,7 +34,6 @@ export default function Login({ status, canResetPassword = true }) {
       <Head title="Log in" />
 
       <div className="w-full max-w-md flex flex-col gap-8">
-
         <header className="flex flex-col items-center gap-4 text-center">
           <div className="flex items-center justify-center gap-3 sm:gap-4">
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden shadow-md">
@@ -44,7 +43,9 @@ export default function Login({ status, canResetPassword = true }) {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-green-700">AGROX</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-green-700">
+              AGROX
+            </h1>
           </div>
           <p className="text-gray-600 text-2xl text-center">
             Faça login para continuar organizando seu sucesso 🌱
@@ -52,7 +53,6 @@ export default function Login({ status, canResetPassword = true }) {
         </header>
 
         <form onSubmit={submit} className="space-y-6 w-full">
-
           <div className="flex flex-col gap-1">
             <label
               htmlFor="email"
@@ -76,7 +76,6 @@ export default function Login({ status, canResetPassword = true }) {
             )}
           </div>
 
-
           <div className="flex flex-col gap-1">
             <label
               htmlFor="password"
@@ -98,7 +97,6 @@ export default function Login({ status, canResetPassword = true }) {
               <p className="text-sm text-red-500 mt-1">{errors.password}</p>
             )}
           </div>
-
 
           {canResetPassword && (
             <div className="flex justify-end">
