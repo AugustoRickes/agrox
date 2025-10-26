@@ -30,113 +30,128 @@ export default function Login({ status, canResetPassword = true }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 p-6 ">
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 p-2">
       <Head title="Log in" />
 
-      <div className="w-full max-w-md flex flex-col gap-8">
-        <header className="flex flex-col items-center gap-4 text-center">
-          <div className="flex items-center justify-center gap-3 sm:gap-4">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden shadow-md">
-              <img
-                src="/agroxlogo.jpeg"
-                alt="AgroX Logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-green-700">
-              AGROX
-            </h1>
+      <form
+        onSubmit={submit}
+        className="w-[390px] min-h-[300px] bg-white border-[6px] border-gray-200 rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col items-center px-4 py-4"
+      >
+        <header className="w-full flex items-center justify-between mb-10">
+          <div className="flex items-center gap-2">
+            <img src="/agroxlogo.jpeg" alt="AgroX Logo" className="w-10 h-10" />
+            <h1 className="text-2xl font-semibold text-green-700">AgroX</h1>
           </div>
-          <p className="text-gray-600 text-2xl text-center">
-            Faça login para continuar organizando seu sucesso 🌱
-          </p>
         </header>
 
-        <form onSubmit={submit} className="space-y-6 w-full">
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="email"
-              className="text-[25px] font-medium text-gray-700"
-            >
-              E-mail
-            </label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="exemplo@agrox.com"
-              required
-              autoFocus
-              autoComplete="email"
-              value={data.email}
-              onChange={(e) => setData("email", e.target.value)}
-              className="h-17 bg-white border border-gray-300 rounded-xl px-4 focus-visible:ring-green-500 text-[25px]"
-            />
-            {errors.email && (
-              <p className="text-lg text-red-500 mt-1">{errors.email}</p>
-            )}
+        <div className="text-center mb-3">
+          <h2 className="text-xl font-semibold text-green-800">
+            Bem-vindo(a) de volta!
+          </h2>
+          <p className="text-gray-500 text-sm">
+            Faça login para continuar organizando seu sucesso 🌱
+          </p>
+        </div>
+
+        <div className="w-full space-y-5">
+          {/* Campo de email */}
+          <div className="flex items-center gap-3 border border-green-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="flex-1">
+              <label
+                htmlFor="email"
+                className="block text-[17px] font-medium text-gray-700 mb-1"
+              >
+                E-mail
+              </label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="exemplo@agrox.com"
+                required
+                autoFocus
+                autoComplete="email"
+                value={data.email}
+                onChange={(e) => setData("email", e.target.value)}
+                className="focus-visible:ring-green-500 border-none bg-transparent p-0"
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="password"
-              className="text-[25px] font-medium text-gray-700"
-            >
-              Senha
-            </label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              required
-              autoComplete="current-password"
-              value={data.password}
-              onChange={(e) => setData("password", e.target.value)}
-              className="h-17 bg-white border border-gray-300 rounded-xl px-4 focus-visible:ring-green-500 text-[30px]"
-            />
-            {errors.password && (
-              <p className="text-sm text-red-500 mt-1">{errors.password}</p>
-            )}
+          {/* Campo de senha */}
+          <div className="flex items-center gap-3 border border-green-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="flex-1">
+              <label
+                htmlFor="password"
+                className="block text-[17px] font-medium text-gray-700 mb-1"
+              >
+                Senha
+              </label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                required
+                autoComplete="current-password"
+                value={data.password}
+                onChange={(e) => setData("password", e.target.value)}
+                className="focus-visible:ring-green-500 border-none bg-transparent p-0"
+              />
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+              )}
+            </div>
           </div>
 
+          {/* Esqueceu senha */}
           {canResetPassword && (
             <div className="flex justify-end">
               <a
                 href={route("password.request")}
-                className="text-green-600 hover:text-green-700 hover:underline text-[25px] font-medium"
+                className="text-lg text-green-600 hover:underline font-medium"
               >
                 Esqueceu sua senha?
               </a>
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={processing}
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold text-[30px] flex items-center justify-center transition-colors duration-300"
-          >
-            {processing && (
-              <LoaderCircle className="h-4 w-4 animate-spin mr-2" />
-            )}
-            Entrar
-          </button>
-
-          <div className="text-center text-gray-700 text-[25px] sm:text-[20px]">
-            Ainda não tem conta?{" "}
-            <a
-              href={route("register")}
-              className="text-green-600 font-medium hover:underline"
+          {/* Botão de login */}
+          <div className="border border-green-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+            <button
+              type="submit"
+              disabled={processing}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-medium text-[17px] flex items-center justify-center"
             >
-              Cadastre-se
-            </a>
+              {processing && (
+                <LoaderCircle className="h-4 w-4 animate-spin mr-2" />
+              )}
+              Entrar
+            </button>
           </div>
-        </form>
 
+          {/* Link de registro */}
+          <div className="border border-green-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-4 text-center">
+            <p className="text-[17px] text-gray-600">
+              Ainda não tem conta?{" "}
+              <a
+                href={route("register")}
+                className="text-green-600 font-medium hover:underline"
+              >
+                Cadastre-se
+              </a>
+            </p>
+          </div>
+        </div>
+
+        {/* Mensagem de status */}
         {status && (
-          <div className="text-center text-sm font-medium text-green-600">
+          <div className="mt-4 text-center text-sm font-medium text-green-600">
             {status}
           </div>
         )}
-      </div>
+      </form>
     </div>
   );
 }
