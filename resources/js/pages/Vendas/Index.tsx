@@ -136,7 +136,7 @@ export default function VendaForm({ products = [] }: Props) {
         <>
             <Head title="Vendas" />
             <div className="min-h-screen bg-gray-50 flex flex-col">
-                {/* Cabeçalho */}
+           
                 <header className="bg-white shadow-sm p-4">
                     <div className="flex items-center justify-between max-w-lg mx-auto">
                         <Link href="/" className="text-green-700 hover:text-green-500 transition-colors duration-200">
@@ -146,22 +146,21 @@ export default function VendaForm({ products = [] }: Props) {
                             <Leaf className="w-7 h-7 text-green-600" />
                             Venda
                         </div>
-                        <div className="w-6"></div> {/* Spacer para centralizar */}
+                        <div className="w-6"></div> 
                     </div>
                 </header>
 
-                {/* Conteúdo principal */}
                 <main className="flex-1 p-6 flex flex-col">
                     <div className="max-w-lg mx-auto flex-1 flex flex-col">
                         <form onSubmit={handleSubmit} className="flex-1 flex flex-col">
                             <div className="space-y-8 flex-1">
                                 <div>
-                                    <Label htmlFor="produto" className="text-lg font-semibold text-gray-700 mb-3 block">Produto</Label>
+                                    <Label htmlFor="produto" className="text-2xl font-semibold text-gray-700 mb-3 block">Produto</Label>
                                     <Select
                                         value={data.product_id}
                                         onValueChange={(value) => setData('product_id', value)}
                                     >
-                                        <SelectTrigger className="bg-white border border-black text-black h-16 text-xl px-6">
+                                        <SelectTrigger className="bg-white border border-black text-black h-20 text-[23px] px-12">
                                             <SelectValue placeholder="Selecione um produto" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -179,7 +178,7 @@ export default function VendaForm({ products = [] }: Props) {
                                 </div>
 
                                 <div>
-                                    <Label htmlFor="quantity" className="text-lg font-semibold text-gray-700 mb-3 block">Quantidade</Label>
+                                    <Label htmlFor="quantity" className="text-2xl font-semibold text-gray-700 mb-3 block">Quantidade</Label>
                                     <div className="flex items-center justify-center gap-4">
                                         <Button
                                             type="button"
@@ -202,12 +201,12 @@ export default function VendaForm({ products = [] }: Props) {
                                             +
                                         </Button>
                                     </div>
-                                    {errors.quantity && <span className="text-red-500 text-sm">{errors.quantity}</span>}
+                                    {errors.quantity && <span className="text-red-500 text-xl">{errors.quantity}</span>}
                                 </div>
 
                                 <Card className="border border-green-200 shadow-md">
-                                    <CardContent className="p-6">
-                                        <Label htmlFor="total" className="text-lg font-semibold text-gray-700 mb-2 block">Total</Label>
+                                    <CardContent className="p-4">
+                                        <Label htmlFor="total" className="text-3xl font-semibold text-gray-700 mb-2 block">Total</Label>
                                         <div className="text-3xl font-bold text-green-600 text-center py-4">
                                             R$ {total.toFixed(2)}
                                         </div>
@@ -215,7 +214,7 @@ export default function VendaForm({ products = [] }: Props) {
                                 </Card>
 
                                 <div className="space-y-6">
-                                    <Label className="text-xl font-semibold text-gray-700 block">Forma de Pagamento</Label>
+                                    <Label className="text-2xl font-semibold text-gray-700 block">Forma de Pagamento</Label>
                                     <div className="flex items-center gap-8 justify-center">
                                         <div className="flex items-center gap-4">
                                             <Checkbox
@@ -230,9 +229,9 @@ export default function VendaForm({ products = [] }: Props) {
                                                         });
                                                     }
                                                 }}
-                                                className="w-10 h-10"
+                                                className="w-15 h-15"
                                             />
-                                            <Label htmlFor="pix" className="text-xl font-medium">PIX</Label>
+                                            <Label htmlFor="pix" className="text-3xl font-medium">PIX</Label>
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <Checkbox
@@ -243,19 +242,19 @@ export default function VendaForm({ products = [] }: Props) {
                                                         setData('payment_type', 'cash');
                                                     }
                                                 }}
-                                                className="w-10 h-10"
+                                                className="w-15 h-15"
                                             />
-                                            <Label htmlFor="dinheiro" className="text-xl font-medium">Dinheiro</Label>
+                                            <Label htmlFor="dinheiro" className="text-3xl font-medium">Dinheiro</Label>
                                         </div>
                                     </div>
-                                    {errors.payment_type && <span className="text-red-500 text-sm">{errors.payment_type}</span>}
+                                    {errors.payment_type && <span className="text-red-500 text-2xl">{errors.payment_type}</span>}
                                 </div>
 
                                 {data.payment_type === 'pix' && qrCodeData && (
                                     <Card className="border border-green-200 shadow-md">
                                         <CardContent className="p-6 space-y-4">
                                             <div className="text-center">
-                                                <Label className="text-lg font-semibold text-gray-700 mb-4 block">
+                                                <Label className="text-3xl font-semibold text-gray-700 mb-4 block">
                                                     QR Code PIX - R$ {total.toFixed(2)}
                                                 </Label>
                                                 <div className="flex justify-center mb-4">
@@ -265,11 +264,11 @@ export default function VendaForm({ products = [] }: Props) {
                                                         className="border border-gray-300 rounded-lg"
                                                     />
                                                 </div>
-                                                <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                                                <div className="text-3xl text-gray-600 bg-gray-50 p-3 rounded-lg">
                                                     <p className="font-medium mb-1">Chave PIX:</p>
-                                                    <p className="font-mono text-xs break-all">25d6d960-eb3b-4dce-a0d8-de55f473bd0a</p>
+                                                    <p className="font-mono text-3xl break-all">25d6d960-eb3b-4dce-a0d8-de55f473bd0a</p>
                                                 </div>
-                                                <p className="text-sm text-gray-500 mt-2">
+                                                <p className="text-2xl text-gray-500 mt-2">
                                                     Escaneie o QR Code ou use a chave PIX acima
                                                 </p>
                                             </div>
@@ -281,21 +280,21 @@ export default function VendaForm({ products = [] }: Props) {
                                     <Card className="border border-green-200 shadow-md">
                                         <CardContent className="p-6 space-y-4">
                                             <div>
-                                                <Label className="text-lg font-semibold text-gray-700 mb-2 block">Valor Recebido</Label>
+                                                <Label className="text-3xl font-semibold text-gray-700 mb-2 block">Valor Recebido</Label>
                                                 <Input
                                                     type="number"
                                                     step="0.01"
                                                     placeholder="R$ 0,00"
                                                     value={data.received_amount_cash}
                                                     onChange={(e) => setData('received_amount_cash', e.target.value)}
-                                                    className="bg-white border border-black text-black h-12 text-lg"
+                                                    className="bg-white border border-black text-black h-20 text-3xl"
                                                 />
-                                                {errors.received_amount_cash && <span className="text-red-500 text-sm">{errors.received_amount_cash}</span>}
+                                                {errors.received_amount_cash && <span className="text-red-500 text-2xl">{errors.received_amount_cash}</span>}
                                             </div>
 
                                             <div>
-                                                <Label className="text-lg font-semibold text-gray-700 mb-2 block">Troco</Label>
-                                                <div className={`text-2xl font-bold text-center py-3 rounded-lg ${
+                                                <Label className="text-3xl font-semibold text-gray-700 mb-2 block">Troco</Label>
+                                                <div className={`text-3xl font-bold text-center py-3 rounded-lg ${
                                                     calculatedChange > 0 ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'
                                                 }`}>
                                                     R$ {calculatedChange.toFixed(2)}
@@ -306,13 +305,13 @@ export default function VendaForm({ products = [] }: Props) {
                                 )}
 
                                 {errors.general && (
-                                    <div className="text-red-500 text-sm text-center">
+                                    <div className="text-red-500 text-2xl text-center">
                                         {errors.general}
                                     </div>
                                 )}
                             </div>
 
-                            {/* Botão fixo no bottom */}
+
                             <div className="mt-8 pt-6 border-t border-gray-200">
                                 {showSuccess && (
                                     <div className="mb-4 p-3 bg-green-100 border border-green-300 rounded-lg text-green-700 text-center">
@@ -322,14 +321,14 @@ export default function VendaForm({ products = [] }: Props) {
                                 <Button
                                     type="submit"
                                     disabled={processing || !data.product_id || !data.payment_type}
-                                    className="w-full bg-green-600 hover:bg-green-700 text-white h-16 text-xl font-bold disabled:opacity-50"
+                                    className="w-full bg-green-600 hover:bg-green-700 text-white h-22 text-[30px] font-bold disabled:opacity-50"
                                 >
                                     {processing ? 'Processando...' : 'Finalizar Venda'}
                                 </Button>
                             </div>
                         </form>
 
-                        <div className="text-sm text-center text-green-500 pt-4 italic">
+                        <div className="text-xl text-center text-green-500 pt-4 italic">
                             ● Status: sincronizado
                         </div>
                     </div>
