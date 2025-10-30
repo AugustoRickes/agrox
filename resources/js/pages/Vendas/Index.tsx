@@ -138,15 +138,15 @@ export default function VendaForm({ products = [] }: Props) {
             <div className="min-h-screen bg-gray-50 flex flex-col">
            
                 <header className="bg-white shadow-sm p-4">
-                    <div className="flex items-center justify-between max-w-lg mx-auto">
+                    <div className="flex items-center justify-center max-w-lg mx-auto gap-13">
                         <Link href="/" className="text-green-700 hover:text-green-500 transition-colors duration-200">
-                            <ArrowLeft className="w-6 h-6" />
+                            <ArrowLeft className="w-10 h-10" />
                         </Link>
-                        <div className="flex items-center gap-3 text-2xl font-bold text-green-800">
-                            <Leaf className="w-7 h-7 text-green-600" />
+                        <div className="flex items-center gap-3 text-4xl font-bold text-green-800">
+                            <Leaf className="w-10 h-10 text-green-600" />
                             Venda
                         </div>
-                        <div className="w-6"></div> 
+                        <div className="w-15"></div> 
                     </div>
                 </header>
 
