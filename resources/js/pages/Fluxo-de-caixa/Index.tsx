@@ -95,7 +95,7 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
         <>
             <Head title="Fluxo de Caixa" />
             <div className="min-h-screen bg-gray-50 flex flex-col">
-                {/* Cabeçalho */}
+              
                 <header className="bg-white shadow-sm p-4">
                     <div className="flex items-center justify-between max-w-lg mx-auto">
                         <Link href="/" className="text-green-700 hover:text-green-500 transition-colors duration-200">
@@ -105,37 +105,37 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                             <BarChart3 className="w-7 h-7 text-green-600" />
                             Fluxo de Caixa
                         </div>
-                        <div className="w-6"></div> {/* Spacer para centralizar */}
+                        <div className="w-6"></div>
                     </div>
                 </header>
 
-                {/* Conteúdo principal */}
-                <main className="flex-1 p-6">
+               
+                <main className="flex-1 p-4">
                     <div className="max-w-lg mx-auto space-y-6">
                         <div className="space-y-6">
                             <div>
-                                <Label className="text-lg font-semibold text-gray-700 mb-2 block">Período</Label>
+                                <Label className="text-3xl font-semibold text-gray-700 mb-2 block">Período</Label>
                                 <Select value={period} onValueChange={handlePeriodChange}>
-                                    <SelectTrigger className="w-full bg-white border border-black h-12 text-lg">
+                                    <SelectTrigger className="w-full bg-white border border-black h-17 text-3xl">
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="week" className="text-lg py-3">Semanal</SelectItem>
-                                        <SelectItem value="month" className="text-lg py-3">Mensal</SelectItem>
+                                        <SelectItem value="week" className="text-3xl py-4">Semanal</SelectItem>
+                                        <SelectItem value="month" className="text-3xl py-4">Mensal</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
 
                             <div>
-                                <Label className="text-lg font-semibold text-gray-700 mb-2 block">Fluxo {periodLabel}</Label>
+                                <Label className="text-3xl font-semibold text-gray-700 mb-2 block">Fluxo {periodLabel}</Label>
                                 {period === 'week' ? (
                                     <Select value={selectedWeek} onValueChange={handleWeekChange}>
-                                        <SelectTrigger className="w-full bg-white border border-black h-12 text-lg">
+                                        <SelectTrigger className="w-full bg-white border border-black h-17 text-3xl">
                                             <SelectValue placeholder="Selecione uma semana" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(weekOptions).map(([value, label]) => (
-                                                <SelectItem key={value} value={value} className="text-lg py-3">
+                                                <SelectItem key={value} value={value} className="text-3xl py-4">
                                                     {label}
                                                 </SelectItem>
                                             ))}
@@ -143,12 +143,12 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                                     </Select>
                                 ) : (
                                     <Select value={selectedMonth.toString()} onValueChange={(value) => handleMonthChange(parseInt(value))}>
-                                        <SelectTrigger className="w-full bg-white border border-black h-12 text-lg">
+                                        <SelectTrigger className="w-full bg-white border border-black h-17 text-3xl">
                                             <SelectValue placeholder="Selecione um mês" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(monthOptions).map(([value, label]) => (
-                                                <SelectItem key={value} value={value} className="text-lg py-3">
+                                                <SelectItem key={value} value={value} className="text-3xl py-4">
                                                     {label}
                                                 </SelectItem>
                                             ))}
@@ -159,29 +159,29 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                         </div>
 
                         <Card className="border border-green-200 shadow-md">
-                            <CardContent className="p-8 space-y-6">
-                                <div className="space-y-6 text-base">
-                                    <div className="flex justify-between items-center py-2">
-                                        <span className="font-medium text-gray-700">Entradas</span>
-                                        <span className="text-green-600 font-bold text-lg">
+                            <CardContent className="p-6 space-y-6">
+                                <div className="space-y-5 text-base">
+                                    <div className="flex justify-between items-center ">
+                                        <span className="font-medium text-[27px] text-gray-700">Entradas</span>
+                                        <span className="text-green-600 font-bold text-3xl">
                                             {formatCurrency(cashFlow.totalEntradas)}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center py-2">
-                                        <span className="font-medium text-gray-700">Saídas</span>
-                                        <span className="text-red-600 font-bold text-lg">
+                                    <div className="flex justify-between items-center ">
+                                        <span className="font-medium text-[27px] text-gray-700">Saídas</span>
+                                        <span className="text-red-600 font-bold text-3xl">
                                             {formatCurrency(cashFlow.totalSaidas)}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center py-2">
-                                        <span className="font-medium text-gray-700">Saldo {periodLabel}</span>
-                                        <span className="font-bold text-lg">
+                                    <div className="flex justify-between items-center ">
+                                        <span className="font-medium text-[27px] text-gray-700">Saldo {periodLabel}</span>
+                                        <span className="font-bold text-3xl">
                                             {formatCurrency(cashFlow.saldoPeriodo)}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center py-2">
-                                        <span className="font-medium text-gray-700">Saldo Acumulado</span>
-                                        <span className="font-bold text-lg">
+                                    <div className="flex justify-between items-center ">
+                                        <span className="font-medium text-[25px] text-gray-700">Saldo Acumulado</span>
+                                        <span className="font-bold text-3xl">
                                             {formatCurrency(cashFlow.saldoAcumulado)}
                                         </span>
                                     </div>
@@ -192,14 +192,14 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                         {cashFlow.sales.length > 0 && (
                             <Card className="border border-green-200 shadow-md">
                                 <CardContent className="p-6 space-y-2">
-                                    <Label className="text-base font-semibold text-green-800">
+                                    <Label className="text-3xl font-semibold text-green-800">
                                         Vendas do Período ({cashFlow.sales.length})
                                     </Label>
-                                    <div className="max-h-32 overflow-y-auto space-y-1">
+                                    <div className="max-h-32 overflow-y-auto space-y-3">
                                         {cashFlow.sales.map((sale) => (
                                             <div
                                                 key={sale.id}
-                                                className="flex justify-between items-center text-xs border-b py-1"
+                                                className="flex justify-between items-center text-3xl border-b py-6"
                                             >
                                                 <div>
                                                     <div className="font-medium">{sale.sale_date}</div>
@@ -222,7 +222,7 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                             </Card>
                         )}
 
-                        <div className="text-sm text-center text-green-500 pt-2 italic">
+                        <div className="text-xl text-center text-green-500 pt-2 italic">
                             ● Ciclo Aberto
                         </div>
                     </div>
