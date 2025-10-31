@@ -8,18 +8,18 @@ export default function HomePage() {
         <div className="min-h-screen bg-gray-50 flex flex-col">
 
             <header className="bg-white shadow-sm p-4">
-                <div className="flex items-center justify-between max-w-lg mx-auto">
+                <div className="flex items-center justify-center max-w-lg mx-auto ">
                     <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 rounded-full overflow-hidden shadow-md">
+                        <div className="w-15 h-15 rounded-full overflow-hidden shadow-md">
                             <img
                                 src="/agroxlogo.jpeg"
                                 alt="Logo AgroX"
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <h1 className="text-xl font-bold text-green-800">AgroX</h1>
+                        <h1 className="text-4xl font-bold text-green-800">AgroX</h1>
                     </div>
-                    <Menu className="w-7 h-7 text-green-700 cursor-pointer hover:text-green-500 transition-colors duration-200" />
+                    
                 </div>
             </header>
 
