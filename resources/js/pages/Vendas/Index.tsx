@@ -155,19 +155,19 @@ export default function VendaForm({ products = [] }: Props) {
                         <form onSubmit={handleSubmit} className="flex-1 flex flex-col">
                             <div className="space-y-8 flex-1">
                                 <div>
-                                    <Label htmlFor="produto" className="text-2xl font-semibold text-gray-700 mb-3 block">Produto</Label>
+                                    <Label htmlFor="produto" className="text-3xl font-semibold text-gray-700 mb-3 block">Produto</Label>
                                     <Select
                                         value={data.product_id}
                                         onValueChange={(value) => setData('product_id', value)}
                                     >
-                                        <SelectTrigger className="bg-white border border-black text-black h-20 text-[23px] px-12">
+                                        <SelectTrigger className="bg-white border border-black text-black h-20 text-3xl px-12">
                                             <SelectValue placeholder="Selecione um produto" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {products.map((product) => {
                                                 const price = Number(product.price) || 0;
                                                 return (
-                                                    <SelectItem key={product.id} value={product.id.toString()} className="text-xl py-4">
+                                                    <SelectItem key={product.id} value={product.id.toString()} className="text-3xl py-4">
                                                         {product.name} - R$ {price.toFixed(2)}
                                                     </SelectItem>
                                                 );
@@ -178,7 +178,7 @@ export default function VendaForm({ products = [] }: Props) {
                                 </div>
 
                                 <div>
-                                    <Label htmlFor="quantity" className="text-2xl font-semibold text-gray-700 mb-3 block">Quantidade</Label>
+                                    <Label htmlFor="quantity" className="text-3xl font-semibold text-gray-700 mb-3 block">Quantidade</Label>
                                     <div className="flex items-center justify-center gap-4">
                                         <Button
                                             type="button"
@@ -207,14 +207,14 @@ export default function VendaForm({ products = [] }: Props) {
                                 <Card className="border border-green-200 shadow-md">
                                     <CardContent className="p-4">
                                         <Label htmlFor="total" className="text-3xl font-semibold text-gray-700 mb-2 block">Total</Label>
-                                        <div className="text-3xl font-bold text-green-600 text-center py-4">
+                                        <div className="text-4xl font-bold text-green-600 text-center py-4">
                                             R$ {total.toFixed(2)}
                                         </div>
                                     </CardContent>
                                 </Card>
 
                                 <div className="space-y-6">
-                                    <Label className="text-2xl font-semibold text-gray-700 block">Forma de Pagamento</Label>
+                                    <Label className="text-3xl font-semibold text-gray-700 block">Forma de Pagamento</Label>
                                     <div className="flex items-center gap-8 justify-center">
                                         <div className="flex items-center gap-4">
                                             <Checkbox
@@ -247,7 +247,7 @@ export default function VendaForm({ products = [] }: Props) {
                                             <Label htmlFor="dinheiro" className="text-3xl font-medium">Dinheiro</Label>
                                         </div>
                                     </div>
-                                    {errors.payment_type && <span className="text-red-500 text-2xl">{errors.payment_type}</span>}
+                                    {errors.payment_type && <span className="text-red-500 text-3xl">{errors.payment_type}</span>}
                                 </div>
 
                                 {data.payment_type === 'pix' && qrCodeData && (
