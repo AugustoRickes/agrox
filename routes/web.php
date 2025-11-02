@@ -14,7 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/vendas', function () {
         return Inertia::render('Vendas/Index', [
-            'products' => Product::all()
+            'products' => Product::where('user_id', auth()->id())->get()
         ]);
     })->name('vendas');
 
@@ -22,13 +22,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/vendas', [SaleController::class, 'store'])->name('vendas.store');
     Route::get('/vendas/historico', [SaleController::class, 'index'])->name('vendas.index');
 
-    Route::get('/cadastro-produtos', [ProductController::class, 'index'])->name('cadastro-produtos');
-
-    // Rotas para produtos (protegidas por autenticação)
-    // Route::middleware('auth')->group(function () {
-        Route::post('/cadastro-produtos', [ProductController::class, 'store'])->name('produtos.store');
-        Route::delete('/produtos/{product}', [ProductController::class, 'destroy'])->name('produtos.destroy');
-    // });
+    // Rotas para produtos
+    Route::get('/produtos', [ProductController::class, 'index'])->name('produtos.index');
+    Route::get('/produtos/criar', [ProductController::class, 'create'])->name('produtos.create');
+    Route::post('/produtos', [ProductController::class, 'store'])->name('produtos.store');
+    Route::get('/produtos/{product}/editar', [ProductController::class, 'edit'])->name('produtos.edit');
+    Route::put('/produtos/{product}', [ProductController::class, 'update'])->name('produtos.update');
+    Route::delete('/produtos/{product}', [ProductController::class, 'destroy'])->name('produtos.destroy');
 
     Route::get('fluxo-de-caixa', [CashFlowController::class, 'index'])->name('fluxo-de-caixa');
 
@@ -36,8 +36,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Fluxo-de-caixa/Ciclos');
     })->name('fluxo-de-caixa.ciclos');
 });
-
-
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
