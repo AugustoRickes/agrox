@@ -60,8 +60,6 @@ export default function ProdutosIndex({ products = [] }: Props) {
 
                 <main className="flex-1 p-3">
                     <div className="max-w-lg mx-auto space-y-6">
-                        
-
                         <Card className="border border-green-200 shadow-md">
                             <CardContent className="p-3">
                                 <div className="mb-4">
@@ -114,12 +112,12 @@ export default function ProdutosIndex({ products = [] }: Props) {
                             </CardContent>
                         </Card>
 
-                    <Link href="/produtos/criar">
-                        <Button className=" w-full bg-green-600 text-white hover:bg-green-700 h-26 text-[27px] font-bold py-6">
-                            <Plus className="w-5 h-5 mr-1" />
-                            Cadastrar Novo Produto
-                        </Button>
-                    </Link>
+                        <Link href="/produtos/criar">
+                            <Button className=" w-full bg-green-600 text-white hover:bg-green-700 h-26 text-[27px] font-bold py-6">
+                                <Plus className="w-5 h-5 mr-1" />
+                                Cadastrar Novo Produto
+                            </Button>
+                        </Link>
                         <div className="text-xl text-center text-green-500 pt-2 italic">
                             ● Status: Sincronizado
                         </div>
