@@ -1,14 +1,27 @@
-import React from 'react';
-import { Link } from '@inertiajs/react';
+import React, { useState } from 'react';
+import { Link, router } from '@inertiajs/react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Menu, TrendingUp, ShoppingCart, Package } from 'lucide-react';
+import { Menu, TrendingUp, ShoppingCart, Package, LogOut } from 'lucide-react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
+    const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+    const handleLogout = () => {
+        router.post('/logout');
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-
             <header className="bg-white shadow-sm p-4">
-                <div className="flex items-center justify-center max-w-lg mx-auto ">
+                <div className="flex items-center justify-between max-w-lg mx-auto">
                     <div className="flex items-center space-x-3">
                         <div className="w-15 h-15 rounded-full overflow-hidden shadow-md">
                             <img
@@ -20,6 +33,13 @@ export default function HomePage() {
                         <h1 className="text-4xl font-bold text-green-800">AgroX</h1>
                     </div>
                     
+                    <button
+                        onClick={() => setShowLogoutDialog(true)}
+                        className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+                        aria-label="Menu"
+                    >
+                        <Menu className="w-8 h-8 text-green-700" />
+                    </button>
                 </div>
             </header>
 
@@ -69,6 +89,33 @@ export default function HomePage() {
                     </div>
                 </div>
             </main>
+
+            <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+                <DialogContent className="max-w-md">
+                    <DialogTitle className="text-2xl font-bold text-gray-800">
+                        Confirmar saída
+                    </DialogTitle>
+                    <DialogDescription className="text-lg text-gray-600">
+                        Tem certeza que deseja sair do sistema?
+                    </DialogDescription>
+                    <DialogFooter className="flex gap-3 mt-6">
+                        <Button
+                            variant="outline"
+                            onClick={() => setShowLogoutDialog(false)}
+                            className="flex-1 h-12 text-lg border-gray-300 hover:bg-gray-50"
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            onClick={handleLogout}
+                            className="flex-1 h-12 text-lg bg-red-600 hover:bg-red-700 text-white"
+                        >
+                            <LogOut className="w-5 h-5 mr-2" />
+                            Sair
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
