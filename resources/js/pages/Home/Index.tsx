@@ -38,7 +38,7 @@ export default function HomePage() {
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
                         aria-label="Menu"
                     >
-                        <Menu className="w-8 h-8 text-green-700" />
+                        <Menu className="w-11 h-11 text-green-700" />
                     </button>
                 </div>
             </header>
@@ -92,25 +92,25 @@ export default function HomePage() {
 
             <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
                 <DialogContent className="max-w-md">
-                    <DialogTitle className="text-2xl font-bold text-gray-800">
+                    <DialogTitle className="text-4xl font-bold text-gray-800">
                         Confirmar saída
                     </DialogTitle>
-                    <DialogDescription className="text-lg text-gray-600">
+                    <DialogDescription className="text-3xl text-gray-600">
                         Tem certeza que deseja sair do sistema?
                     </DialogDescription>
                     <DialogFooter className="flex gap-3 mt-6">
                         <Button
                             variant="outline"
                             onClick={() => setShowLogoutDialog(false)}
-                            className="flex-1 h-12 text-lg border-gray-300 hover:bg-gray-50"
+                            className="flex-1 h-17 text-3xl border-gray-300 hover:bg-gray-50"
                         >
                             Cancelar
                         </Button>
                         <Button
                             onClick={handleLogout}
-                            className="flex-1 h-12 text-lg bg-red-600 hover:bg-red-700 text-white"
+                            className="flex-1 h-17 text-3xl bg-red-600 hover:bg-red-700 text-white"
                         >
-                            <LogOut className="w-5 h-5 mr-2" />
+                            <LogOut className="w-10 h-10 mr-2" />
                             Sair
                         </Button>
                     </DialogFooter>
