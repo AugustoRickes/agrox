@@ -15,11 +15,6 @@ class CheckIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Temporarily halt execution and dump the authenticated user object
-        // to the browser to diagnose the issue directly.
-        dd(auth()->user());
-
-        // Original logic (will not be reached while dd() is active)
         if (!auth()->check() || !auth()->user()->is_admin) {
             return redirect('/');
         }
