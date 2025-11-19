@@ -21,10 +21,10 @@ return [
     'manifest' => [
         'name' => 'Agrox',
         'short_name' => 'AGX',
-        'background_color' => '#B2FBA5',
+        'background_color' => '#EBE7DD',
         'display' => 'fullscreen',
         'description' => 'A Progressive Web Application setup for Laravel projects.',
-        'theme_color' => '#895129',
+        'theme_color' => '#EBE7DD',
         'icons' => [
             [
                 'src' => 'logo.png',
