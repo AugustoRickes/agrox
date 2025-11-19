@@ -42,8 +42,10 @@
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         @inertiaHead
+        @PwaHead
     </head>
     <body class="font-sans antialiased">
         @inertia
+        @RegisterServiceWorkerScript
     </body>
 </html>
