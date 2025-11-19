@@ -27,9 +27,9 @@ return [
         'theme_color' => '#895129',
         'icons' => [
             [
-                'src' => 'agroxlogo.jpeg',
+                'src' => 'logo.png',
                 'sizes' => '512x512',
-                'type' => 'image/jpeg',
+                'type' => 'image/png',
             ],
         ],
     ],
