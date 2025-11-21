@@ -150,9 +150,9 @@ export default function VendaForm({ products = [] }: Props) {
         <>
             <Head title="Vendas" />
             <div className="min-h-screen bg-gray-50 flex flex-col">
-
+           
                 <header className="bg-white shadow-sm p-4">
-                    <div className="flex items-center justify-between max-w-lg mx-auto">
+                    <div className="flex items-center justify-center max-w-lg mx-auto gap-13">
                         <Link href="/" className="text-green-700 hover:text-green-500 transition-colors duration-200">
                             <ArrowLeft className="w-10 h-10" />
                         </Link>
@@ -160,7 +160,7 @@ export default function VendaForm({ products = [] }: Props) {
                             <Leaf className="w-10 h-10 text-green-600" />
                             Venda
                         </div>
-                        <div className="w-10"></div>
+                        <div className="w-15"></div> 
                     </div>
                 </header>
 
