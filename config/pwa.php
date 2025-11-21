@@ -41,7 +41,7 @@ return [
     | Toggles the application's debug mode based on the environment variable
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------

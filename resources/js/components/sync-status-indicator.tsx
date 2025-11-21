@@ -2,7 +2,8 @@ import React from 'react';
 import { useSyncService } from '../services/syncService';
 import { useOfflineStorage } from '../hooks/useOfflineStorage';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
-import { Icon } from './icon'; // Assuming an Icon component exists
+import { Icon } from './icon';
+import { CloudOff, AlertCircle, UploadCloud, CheckCircle, RefreshCw } from 'lucide-react';
 
 export const SyncStatusIndicator: React.FC = () => {
   const { isSyncing, error, syncManual } = useSyncService();
@@ -10,19 +11,19 @@ export const SyncStatusIndicator: React.FC = () => {
   const isOnline = useOnlineStatus();
 
   const getStatus = () => {
-    if (!isOnline) return { color: 'text-red-500', icon: 'offline', text: 'Offline' };
-    if (isSyncing) return { color: 'text-yellow-500', icon: 'sync', text: 'Sincronizando...' };
-    if (error) return { color: 'text-orange-500', icon: 'error', text: 'Erro' };
-    if (pendingCount > 0) return { color: 'text-blue-500', icon: 'upload', text: `${pendingCount} pendente(s)` };
-    return { color: 'text-green-500', icon: 'check-circle', text: 'Sincronizado' };
+    if (!isOnline) return { color: 'text-gray-500', iconNode: CloudOff, text: 'Offline' };
+    if (isSyncing) return { color: 'text-yellow-500', iconNode: RefreshCw, text: 'Sincronizando...' };
+    if (error) return { color: 'text-red-500', iconNode: AlertCircle, text: 'Erro na Sincronização' };
+    if (pendingCount > 0) return { color: 'text-blue-500', iconNode: UploadCloud, text: `${pendingCount} pendente(s)` };
+    return { color: 'text-green-500', iconNode: CheckCircle, text: 'Sincronizado' };
   };
 
-  const { color, icon, text } = getStatus();
+  const { color, iconNode, text } = getStatus();
 
   return (
-    <div className="flex items-center gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
+    <div className="flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
       <span className={color}>
-        <Icon name={icon} className={`h-5 w-5 ${isSyncing ? 'animate-spin' : ''}`} />
+        <Icon iconNode={iconNode} className={`h-5 w-5 ${isSyncing ? 'animate-spin' : ''}`} />
       </span>
       <span>{text}</span>
       
@@ -38,3 +39,4 @@ export const SyncStatusIndicator: React.FC = () => {
     </div>
   );
 };
+
