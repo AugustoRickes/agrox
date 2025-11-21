@@ -13,6 +13,9 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Leaf, ArrowLeft } from "lucide-react";
 import { useState, useEffect } from 'react';
+import { useOnlineStatus } from '@/hooks/useOnlineStatus';
+import { useOfflineStorage } from '@/hooks/useOfflineStorage';
+import { SyncStatusIndicator } from '@/components/sync-status-indicator';
 
 interface Product {
     id: number;
@@ -37,31 +40,33 @@ export default function VendaForm({ products = [] }: Props) {
     const [calculatedChange, setCalculatedChange] = useState(0);
     const [total, setTotal] = useState(0);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
     const [qrCodeData, setQrCodeData] = useState('');
     const { flash, errors } = usePage().props;
+
+    const isOnline = useOnlineStatus();
+    const { addSale: addOfflineSale } = useOfflineStorage();
 
     const { data, setData, post, processing, reset } = useForm({
         product_id: '',
         quantity: 1,
-        payment_type: '',
+        payment_type: '' as 'pix' | 'cash' | '',
         received_amount_cash: '',
     });
 
-    // Exibir mensagem de sucesso da sessão
     useEffect(() => {
         if (flash?.success) {
+            setSuccessMessage(flash.message || 'Venda realizada com sucesso!');
             setShowSuccess(true);
             setTimeout(() => {
-                alert(flash.message || 'Venda realizada com sucesso!');
                 if (flash?.sale_data?.change > 0) {
                     alert(`Troco: R$ ${flash.sale_data.change.toFixed(2)}`);
                 }
                 setShowSuccess(false);
-            }, 100);
+            }, 2000);
         }
     }, [flash]);
 
-    // Calcula o total quando produto ou quantidade mudam
     useEffect(() => {
         if (data.product_id && data.quantity) {
             const selectedProduct = products.find(p => p.id.toString() === data.product_id);
@@ -75,7 +80,6 @@ export default function VendaForm({ products = [] }: Props) {
         }
     }, [data.product_id, data.quantity, products]);
 
-    // Calcula o troco quando valor recebido muda
     useEffect(() => {
         if (data.payment_type === 'cash' && data.received_amount_cash && total > 0) {
             const receivedAmount = parseFloat(data.received_amount_cash);
@@ -86,7 +90,6 @@ export default function VendaForm({ products = [] }: Props) {
         }
     }, [data.received_amount_cash, data.payment_type, total]);
 
-    // Gerar QR Code para PIX
     useEffect(() => {
         if (data.payment_type === 'pix' && total > 0) {
             const pixPayload = '00020126580014BR.GOV.BCB.PIX013625d6d960-eb3b-4dce-a0d8-de55f473bd0a5204000053039865802BR592548.895.203 AUGUSTO RICKES6009SAO PAULO610805409000622505216TuP2BP4YXsPRel19zjlk63047264';
@@ -96,12 +99,17 @@ export default function VendaForm({ products = [] }: Props) {
         }
     }, [data.payment_type, total]);
 
+    const resetForm = () => {
+        reset();
+        setTotal(0);
+        setCalculatedChange(0);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validação básica no frontend
-        if (!data.product_id) {
-            alert('Selecione um produto');
+        if (!data.product_id || !data.payment_type) {
+            alert('Selecione um produto e uma forma de pagamento.');
             return;
         }
 
@@ -110,35 +118,41 @@ export default function VendaForm({ products = [] }: Props) {
             return;
         }
 
-        post('/vendas', {
-            onSuccess: (page) => {
-                // Reset form após sucesso
-                reset();
-                setTotal(0);
-                setCalculatedChange(0);
-
-                // Mostrar mensagem de sucesso imediata
-                setTimeout(() => {
-                    alert('Venda realizada com sucesso!');
-                    if (data.payment_type === 'cash' && calculatedChange > 0) {
-                        alert(`Troco: R$ ${calculatedChange.toFixed(2)}`);
-                    }
-                }, 200);
-            },
-            onError: (errors) => {
-                console.error('Erro na venda:', errors);
-                alert('Erro ao processar venda. Tente novamente.');
-            }
-        });
+        if (isOnline) {
+            post('/vendas', {
+                onSuccess: () => {
+                    resetForm();
+                },
+                onError: (errors) => {
+                    console.error('Erro na venda:', errors);
+                    alert('Erro ao processar venda. Tente novamente.');
+                }
+            });
+        } else {
+            // Offline logic
+            const saleData = {
+                product_id: Number(data.product_id),
+                quantity: data.quantity,
+                payment_type: data.payment_type as 'pix' | 'cash',
+                received_amount_cash: Number(data.received_amount_cash) || undefined,
+                total_amount: total,
+                change_cash: calculatedChange,
+            };
+            addOfflineSale(saleData);
+            setSuccessMessage('Venda salva localmente. Será sincronizada quando houver conexão.');
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000);
+            resetForm();
+        }
     };
 
     return (
         <>
             <Head title="Vendas" />
             <div className="min-h-screen bg-gray-50 flex flex-col">
-           
+
                 <header className="bg-white shadow-sm p-4">
-                    <div className="flex items-center justify-center max-w-lg mx-auto gap-13">
+                    <div className="flex items-center justify-between max-w-lg mx-auto">
                         <Link href="/" className="text-green-700 hover:text-green-500 transition-colors duration-200">
                             <ArrowLeft className="w-10 h-10" />
                         </Link>
@@ -146,7 +160,7 @@ export default function VendaForm({ products = [] }: Props) {
                             <Leaf className="w-10 h-10 text-green-600" />
                             Venda
                         </div>
-                        <div className="w-15"></div> 
+                        <div className="w-10"></div>
                     </div>
                 </header>
 
@@ -315,7 +329,7 @@ export default function VendaForm({ products = [] }: Props) {
                             <div className="mt-8 pt-6 border-t border-gray-200">
                                 {showSuccess && (
                                     <div className="mb-4 p-3 bg-green-100 border border-green-300 rounded-lg text-green-700 text-center">
-                                        Venda processada com sucesso!
+                                        {successMessage}
                                     </div>
                                 )}
                                 <Button
@@ -323,13 +337,13 @@ export default function VendaForm({ products = [] }: Props) {
                                     disabled={processing || !data.product_id || !data.payment_type}
                                     className="w-full bg-green-600 hover:bg-green-700 text-white h-22 text-[30px] font-bold disabled:opacity-50"
                                 >
-                                    {processing ? 'Processando...' : 'Finalizar Venda'}
+                                    {processing ? 'Processando...' : (isOnline ? 'Finalizar Venda' : 'Salvar Offline')}
                                 </Button>
                             </div>
                         </form>
 
                         <div className="text-xl text-center text-green-500 pt-4 italic">
-                            ● Status: sincronizado
+                            <SyncStatusIndicator />
                         </div>
                     </div>
                 </main>

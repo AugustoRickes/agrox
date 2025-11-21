@@ -13,13 +13,16 @@ class Sale extends Model
         'user_id',
         'sale_date',
         'total_amount',
+        'offline_id',
         'is_synced',
+        'synced_at',
     ];
 
     protected $casts = [
         'sale_date' => 'datetime',
         'total_amount' => 'decimal:2',
         'is_synced' => 'boolean',
+        'synced_at' => 'datetime',
     ];
 
     public function user()

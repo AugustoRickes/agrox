@@ -5,9 +5,13 @@ use Inertia\Inertia;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CashFlowController;
+use App\Http\Controllers\SyncController;
 use App\Models\Product;
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/sync/sales', [SyncController::class, 'syncSales'])->name('sync.sales');
+    Route::get('/sync/status', [SyncController::class, 'syncStatus'])->name('sync.status');
+
     Route::get('/', function () {
         return Inertia::render('Home/Index');
     })->name('home');
