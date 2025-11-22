@@ -40,7 +40,9 @@ class CashFlowController extends Controller
         }
 
         // busca vendas periodo
-        $sales = Sale::with(['saleItems.product', 'payments'])
+        $sales = Sale::with(['saleItems.product' => function ($query) {
+            $query->withTrashed();
+        }, 'payments'])
             ->where('user_id', auth()->id())
             ->whereDate('sale_date', '>=', $startDate->format('Y-m-d'))
             ->whereDate('sale_date', '<=', $endDate->format('Y-m-d'))
@@ -78,7 +80,7 @@ class CashFlowController extends Controller
                         'total_amount' => $sale->total_amount,
                         'items' => $sale->saleItems->map(function ($item) {
                             return [
-                                'product_name' => $item->product->name,
+                                'product_name' => $item->product ? $item->product->name : '(Produto Removido)',
                                 'quantity' => $item->quantity,
                                 'unit_price' => $item->unit_price,
                             ];
