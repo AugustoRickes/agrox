@@ -84,7 +84,9 @@ class SaleController extends Controller
 
     public function index()
     {
-        $sales = Sale::with(['saleItems.product', 'payments'])
+        $sales = Sale::with(['saleItems.product' => function ($query) {
+                        $query->withTrashed();
+                    }, 'payments'])
                     ->where('user_id', auth()->id())
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
