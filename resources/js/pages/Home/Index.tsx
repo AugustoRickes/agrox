@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
+
 export default function HomePage() {
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
@@ -36,9 +37,9 @@ export default function HomePage() {
                     <button
                         onClick={() => setShowLogoutDialog(true)}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
-                        aria-label="Menu"
+                        aria-label="Logout"
                     >
-                        <Menu className="w-11 h-11 text-green-700" />
+                        <LogOut className="w-11 h-11 text-red-600" />
                     </button>
                 </div>
             </header>
@@ -91,24 +92,24 @@ export default function HomePage() {
             </main>
 
             <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-                <DialogContent className="max-w-md">
+                <DialogContent className="w-[500px]">
                     <DialogTitle className="text-4xl font-bold text-gray-800">
                         Confirmar saída
                     </DialogTitle>
                     <DialogDescription className="text-3xl text-gray-600">
                         Tem certeza que deseja sair do sistema?
                     </DialogDescription>
-                    <DialogFooter className="flex gap-3 mt-6">
+                    <DialogFooter className="flex gap-3 mt-6=">
                         <Button
                             variant="outline"
                             onClick={() => setShowLogoutDialog(false)}
-                            className="flex-1 h-17 text-3xl border-gray-300 hover:bg-gray-50"
+                            className="flex-1 h-19 text-3xl border-gray-300 hover:bg-gray-50"
                         >
                             Cancelar
                         </Button>
                         <Button
                             onClick={handleLogout}
-                            className="flex-1 h-17 text-3xl bg-red-600 hover:bg-red-700 text-white"
+                            className="flex-1 h-19 text-3xl bg-red-600 hover:bg-red-700 text-white"
                         >
                             <LogOut className="w-10 h-10 mr-2" />
                             Sair
