@@ -197,7 +197,7 @@ export default function VendaForm({ products = [] }: Props) {
                                         <Button
                                             type="button"
                                             onClick={() => setData('quantity', Math.max(1, data.quantity - 1))}
-                                            className="w-14 h-14 rounded-full bg-red-500 hover:bg-red-600 text-white text-2xl font-bold"
+                                            className="w-20 h-20 rounded-full bg-red-500 hover:bg-red-600 text-white text-2xl font-bold"
                                             disabled={data.quantity <= 1}
                                         >
                                             -
@@ -210,7 +210,7 @@ export default function VendaForm({ products = [] }: Props) {
                                         <Button
                                             type="button"
                                             onClick={() => setData('quantity', data.quantity + 1)}
-                                            className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white text-2xl font-bold"
+                                            className="w-20 h-20 rounded-full bg-green-500 hover:bg-green-600 text-white text-2xl font-bold"
                                         >
                                             +
                                         </Button>
@@ -275,7 +275,7 @@ export default function VendaForm({ products = [] }: Props) {
                                                     <img
                                                         src={qrCodeData}
                                                         alt="QR Code PIX"
-                                                        className="border border-gray-300 rounded-lg"
+                                                        className=" w-[250px] h-[250px] border border-gray-300 rounded-lg"
                                                     />
                                                 </div>
                                                 <div className="text-3xl text-gray-600 bg-gray-50 p-3 rounded-lg">
