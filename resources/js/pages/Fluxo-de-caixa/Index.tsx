@@ -222,9 +222,7 @@ export default function FluxoCaixa({ cashFlow, weekOptions, monthOptions }: Prop
                             </Card>
                         )}
 
-                        <div className="text-xl text-center text-green-500 pt-2 italic">
-                            ● Ciclo Aberto
-                        </div>
+                       
                     </div>
                 </main>
             </div>
